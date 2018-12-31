@@ -1,0 +1,18 @@
+﻿<Window x:Class="AtomicWriter.EditTest"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AtomicWriter"
+        mc:Ignorable="d"
+        Title="EditTest" Height="450" Width="800">
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Test Name: </TextBlock>
+            <TextBox Name="TestName"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Name="InstructionsList"/>
+        <Button Name="AddInstructionButton" Click="AddInstructionButton_Click">Add Instruction</Button>
+        <Button Name="SaveButton" Click="SaveButton_Click">Save</Button>
+    </StackPanel>
+</Window>
