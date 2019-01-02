@@ -1,6 +1,6 @@
-﻿using AtomicWriter.Objects;
+﻿using AtomicWriter.DataAccess;
+using AtomicWriter.Objects;
 using MahApps.Metro.Controls;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -14,43 +14,53 @@ namespace AtomicWriter
 	public partial class MainWindow : MetroWindow
 	{
 		private SaveObject _saveObject;
+		private string _location = @"C:\Tests\test.json";
 
 		public MainWindow()
 		{
 			InitializeComponent();
 			InitSaveObject();
+			//SaveCurrentSaveObject();
 			InitTestList();
 		}
 
 		private void InitTestList()
 		{
-			TestsList.ItemsSource = _saveObject.Tests.Select(x => x.TestName);
+			if(_saveObject != null && _saveObject.Tests.Count > 0)
+			{
+				TestsList.ItemsSource = _saveObject.Tests.Select(x => x.TestName);
+			}
 		}
 
 		private void InitSaveObject()
 		{
-			_saveObject = new SaveObject()
+			while(_saveObject == null)
 			{
-				Tests = new List<Test>()
-				{
-					new Test()
-					{
-						TestName = "Go to google",
-						Instructions = new List<Instruction>()
-						{
-							new Instruction()
-							{
-								InstructionType = Instruction.InstructionTypes.GoToUrl,
-								Payload = "https://www.google.com"
-							}
-						}
-					},
-					new Test()
-					{
-						TestName = "NewTestName"
-					}
-				}
-			};
+				OpenTestSuite();
+			}
+			//_saveObject = DataReader.LoadObject(_location);
+			//_saveObject = new SaveObject()
+			//{
+			//	Tests = new List<Test>()
+			//	{
+			//		new Test()
+			//		{
+			//			TestName = "Go to google",
+			//			Instructions = new List<Instruction>()
+			//			{
+			//				new Instruction()
+			//				{
+			//					InstructionType = Instruction.InstructionTypes.GoToUrl,
+			//					Payload = "https://www.google.com"
+			//				}
+			//			}
+			//		},
+			//		new Test()
+			//		{
+			//			TestName = "NewTestName"
+			//		}
+			//	}
+			//};
 		}
 
 		private void TestsList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -61,10 +71,10 @@ namespace AtomicWriter
 			var result = editTestWindow.ShowDialog();
 			if (result == true)
 			{
-				MessageBox.Show(editTestWindow.Test.TestName);
+				SaveCurrentSaveObject();
 			}
 		}
-		
+
 		private void NewTestButton_Click(object sender, RoutedEventArgs e)
 		{
 			var editTestWindow = new EditTest(new Test());
@@ -72,7 +82,57 @@ namespace AtomicWriter
 			var result = editTestWindow.ShowDialog();
 			if (result == true)
 			{
-				MessageBox.Show(editTestWindow.Test.TestName);
+				_saveObject.Tests.Add(editTestWindow.Test);
+				SaveCurrentSaveObject();
+			}
+		}
+
+		private void SaveCurrentSaveObject()
+		{
+			DataWriter.Save(_location, _saveObject);
+			InitTestList();
+		}
+
+		private void OpenTestSuite()
+		{
+			var b = new System.Windows.Forms.OpenFileDialog
+			{
+				FileName = _location,
+				InitialDirectory = @"C:/Tests/"
+			};
+
+			if (b.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			{
+				_location = b.FileName;
+			}
+			else
+			{
+				return;
+			}
+
+			_saveObject = DataReader.LoadObject(_location);
+			InitTestList();
+		}
+
+		private void OpenTestSuiteButton_Click(object sender, RoutedEventArgs e)
+		{
+			OpenTestSuite();
+		}
+
+		private void DeleteTestButton_Click(object sender, RoutedEventArgs e)
+		{
+			var selectedTest = ((string)TestsList.SelectedItem);
+			if(string.IsNullOrEmpty(selectedTest))
+			{
+				return;
+			}
+
+			var result = MessageBox.Show($"Are you sure you would like to delete the test {selectedTest}? ", "This operation cannot be undone.", MessageBoxButton.YesNo);
+
+			if(result == MessageBoxResult.Yes)
+			{
+				_saveObject.Tests.Remove(_saveObject.Tests.First(x => x.TestName == selectedTest));
+				SaveCurrentSaveObject();
 			}
 		}
 	}

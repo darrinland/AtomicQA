@@ -24,31 +24,7 @@ namespace AtomicReader
 			{
 				location = b.FileName;
 			}
-
-			//do
-			//{
-			//	location = Console.ReadLine();
-			//} while (!DataReader.FileExists(location));
-
-			//var save = new SaveObject()
-			//{
-			//	Tests = new List<Test>()
-			//	{
-			//		new Test()
-			//		{
-			//			Instructions = new List<Instruction>()
-			//			{
-			//				new Instruction()
-			//				{
-			//					Payload = "https://www.google.com"
-			//				}
-			//			}
-			//		}
-			//	}
-			//};
-			//var writer = new DataWriter();
-			//writer.Save(location, save);
-
+			
 			var save = DataReader.LoadObject(location);
 			save.Tests.ForEach(test =>
 			{

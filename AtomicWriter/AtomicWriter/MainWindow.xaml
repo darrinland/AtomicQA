@@ -11,9 +11,13 @@
         Height="450"
         Width="800">
     <StackPanel Orientation="Vertical" >
+        <StackPanel Name="ActionButtonBar" Orientation="Horizontal">
+            <Button Name="OpenTestSuiteButton" Click="OpenTestSuiteButton_Click">Open Test Suite</Button>
+        </StackPanel>
         <TextBlock FontSize="20">TESTS:</TextBlock>
         <ListBox Name="TestsList" MouseDoubleClick="TestsList_MouseDoubleClick"/>
-        <Button Name="NewTestButton" Click="NewTestButton_Click" >New Test</Button>
+        <Button Name="DeleteTestButton" Click="DeleteTestButton_Click">Delete Selected Test</Button>
+        <Button Name="NewTestButton" Click="NewTestButton_Click">New Test</Button>
     </StackPanel>
 
 </Controls:MetroWindow>

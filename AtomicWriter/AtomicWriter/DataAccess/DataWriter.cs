@@ -1,9 +1,9 @@
-﻿using AtomicReader.Objects;
+﻿using AtomicWriter.Objects;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text;
 
-namespace AtomicReader.DataAccess
+namespace AtomicWriter.DataAccess
 {
 	public static class DataWriter
 	{
