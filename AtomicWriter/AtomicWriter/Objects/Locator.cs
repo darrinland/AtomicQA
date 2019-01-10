@@ -1,4 +1,6 @@
-﻿namespace AtomicWriter.Objects
+﻿using System.Collections.Generic;
+
+namespace AtomicWriter.Objects
 {
 	public class Locator
 	{
@@ -15,6 +17,21 @@
 			Name,
 			PartialLinkText,
 			TagName,
+		}
+
+		public static List<LocatorTypes> GetLocatorTypes()
+		{
+			return new List<LocatorTypes>
+			{
+				LocatorTypes.XPath,
+				LocatorTypes.Id,
+				LocatorTypes.ClassName,
+				LocatorTypes.CssSelector,
+				LocatorTypes.LinkText,
+				LocatorTypes.Name,
+				LocatorTypes.PartialLinkText,
+				LocatorTypes.TagName
+			};
 		}
 	}
 }
