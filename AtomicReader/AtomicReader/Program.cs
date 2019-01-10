@@ -16,13 +16,16 @@ namespace AtomicReader
 		private static void RunTestFile()
 		{
 			var save = DataReader.LoadObject(_location);
+			var logger = new Logger();
 			save.Tests.ForEach(test =>
 			{
-				using (var testRunner = new TestRunner())
+				using (var testRunner = new TestRunner(logger))
 				{
 					testRunner.RunTest(test);
 				}
 			});
+
+			// TODO: Need to save logs somewhere for use in dashboard
 		}
 
 		[STAThread]
