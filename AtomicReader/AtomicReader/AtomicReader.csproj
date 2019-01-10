@@ -54,6 +54,7 @@
     <Compile Include="Objects\Locator.cs" />
     <Compile Include="Objects\SaveObject.cs" />
     <Compile Include="Objects\Test.cs" />
+    <Compile Include="Objects\TypedTextInput.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestRunner.cs" />

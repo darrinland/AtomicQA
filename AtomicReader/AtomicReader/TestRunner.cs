@@ -36,6 +36,9 @@ namespace AtomicReader
 				case Instruction.InstructionTypes.Click:
 					ExecuteClick(instruction.Payload);
 					break;
+                case Instruction.InstructionTypes.Type:
+                    ExecuteInput(instruction.Payload);
+                    break;
 				default:
 					Console.Write("InstructionType not Recognized");
 					break;
@@ -52,5 +55,12 @@ namespace AtomicReader
 			var locator = Newtonsoft.Json.JsonConvert.DeserializeObject<Locator>(payload);
 			_driver.WaitToClick(Locator.GetByLocator(locator.LocatorType, locator.Path));
 		}
+
+        private void ExecuteInput(string payload)
+        {
+            var typedTextInstruction = Newtonsoft.Json.JsonConvert.DeserializeObject<TypedTextInput>(payload);
+            var locator = typedTextInstruction.Locator;
+            _driver.Input(Locator.GetByLocator(locator.LocatorType, locator.Path), typedTextInstruction.Text);
+        }
 	}
 }
