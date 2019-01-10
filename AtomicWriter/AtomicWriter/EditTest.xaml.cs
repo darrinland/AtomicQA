@@ -33,10 +33,12 @@ namespace AtomicWriter
 		private void InstructionTypeChanged(object sender, RoutedEventArgs e)
 		{
 			var instructionTypeSelection = ((ComboBox)sender);
-			var instructionPanel = ((StackPanel)instructionTypeSelection.Parent);
+            StackPanel instructionPanel = ((StackPanel)instructionTypeSelection.Parent);
 			var locatorSelection = ((ComboBox)instructionPanel.Children[1]);
+            var textInput = ((TextBox)instructionPanel.Children[3]);
 
-			if ((Instruction.InstructionTypes)instructionTypeSelection.SelectedItem == Instruction.InstructionTypes.Click)
+            var selectedInstruction = (Instruction.InstructionTypes)instructionTypeSelection.SelectedItem;
+            if (selectedInstruction == Instruction.InstructionTypes.Click || selectedInstruction == Instruction.InstructionTypes.Type)
 			{
 				locatorSelection.Visibility = Visibility.Visible;
 			}
@@ -44,7 +46,17 @@ namespace AtomicWriter
 			{
 				locatorSelection.Visibility = Visibility.Collapsed;
 			}
-		}
+
+            if (selectedInstruction == Instruction.InstructionTypes.Type)
+            {
+                textInput.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                textInput.Visibility = Visibility.Collapsed;
+            }
+
+        }
 
 		private void AddInstruction(Instruction instruction)
 		{
@@ -64,30 +76,44 @@ namespace AtomicWriter
 
 			var text = string.Empty;
 			Locator locator = null;
+            var inputText = string.Empty;
 			if (instruction.InstructionType == Instruction.InstructionTypes.Click)
 			{
 				locator = JsonConvert.DeserializeObject<Locator>(instruction.Payload);
 				text = locator.Path;
 			}
-			else
-			{
+            else if (instruction.InstructionType == Instruction.InstructionTypes.Type)
+            {
+                var inputTextType = JsonConvert.DeserializeObject<TypedTextInput>(instruction.Payload);
+                locator = inputTextType.Locator;
+                text = inputTextType.Locator.Path;
+                inputText = inputTextType.Text;
+            }
+            else 
+            {
 				text = instruction.Payload;
 			}
+
 
 			var locatorSelection = new ComboBox()
 			{
 				ItemsSource = Locator.GetLocatorTypes(),
-				Visibility = instruction.InstructionType == Instruction.InstructionTypes.Click ? Visibility.Visible : Visibility.Collapsed,
-				SelectedItem = instruction.InstructionType == Instruction.InstructionTypes.Click ? locator.LocatorType : Locator.LocatorTypes.Id,
+				Visibility = instruction.InstructionType == Instruction.InstructionTypes.Click || instruction.InstructionType == Instruction.InstructionTypes.Type ? Visibility.Visible : Visibility.Collapsed,
+				SelectedItem = instruction.InstructionType == Instruction.InstructionTypes.Click || instruction.InstructionType == Instruction.InstructionTypes.Type ? locator.LocatorType : Locator.LocatorTypes.Id,
 			};
-
 			instructionPanel.Children.Add(locatorSelection);
+            instructionPanel.Children.Add(new TextBox()
+            {
+                Text = text
+            });
 
-			instructionPanel.Children.Add(new TextBox()
-			{
-				Text = text
-			});
-
+            var typedTextInput = new TextBox()
+            {
+                Visibility = instruction.InstructionType == Instruction.InstructionTypes.Type ? Visibility.Visible : Visibility.Collapsed,
+                Name = "TextInput",
+                Text = inputText,
+            };
+            instructionPanel.Children.Add(typedTextInput);
 
 			var deleteInstructionButton = new Button()
 			{
@@ -127,7 +153,19 @@ namespace AtomicWriter
 						var locator = new Locator() { LocatorType = locatorType, Path = xpath };
 						payload = Newtonsoft.Json.JsonConvert.SerializeObject(locator);
 						break;
-					default:
+                    case Instruction.InstructionTypes.Type:
+                        xpath = ((TextBox)instructionPanel.Children[2]).Text;
+                        var textInput = ((TextBox)instructionPanel.Children[3]).Text;
+                        locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
+                        locator = new Locator() { LocatorType = locatorType, Path = xpath };
+                        TypedTextInput input = new TypedTextInput()
+                        {
+                            Locator = locator,
+                            Text = textInput,
+                        };
+                        payload = JsonConvert.SerializeObject(input);
+                        break;
+                    default:
 						MessageBox.Show("Error matching InstructionType");
 						break;
 				}
@@ -176,6 +214,12 @@ namespace AtomicWriter
 
 			instructionPanel.Children.Add(locatorSelection);
 			instructionPanel.Children.Add(new TextBox() { });
+
+            var textInput = new TextBox()
+            {
+                Visibility = Visibility.Collapsed
+            };
+            instructionPanel.Children.Add(textInput);
 
 			var deleteInstructionButton = new Button()
 			{

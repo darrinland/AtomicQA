@@ -8,7 +8,8 @@
 		public enum InstructionTypes
 		{
 			GoToUrl,
-			Click
+			Click,
+            Type
 		}
 	}
 }
