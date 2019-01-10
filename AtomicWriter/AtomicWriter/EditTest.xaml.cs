@@ -68,6 +68,12 @@ namespace AtomicWriter
 			Window.GetWindow(this).Close();
 		}
 
+        private void DeleteInstructionButton_Click(object sender, RoutedEventArgs e)
+        {
+            var parentPanel = ((StackPanel)((Button)sender).Parent);
+            InstructionsList.Children.Remove(parentPanel);
+        }
+
 		private void AddInstructionButton_Click(object sender, RoutedEventArgs e)
 		{
 			var instructionPanel = new StackPanel()
@@ -82,6 +88,16 @@ namespace AtomicWriter
 
 			InstructionsList.Children.Add(instructionPanel);
 
+            var deleteInstructionButton = new Button()
+            {
+                Width = 50,
+                Content = new ContentControl()
+                {
+                    Content = "Delete",
+                },
+            };
+            deleteInstructionButton.Click += new RoutedEventHandler(DeleteInstructionButton_Click);
+            instructionPanel.Children.Add(deleteInstructionButton);
 		}
 	}
 }
