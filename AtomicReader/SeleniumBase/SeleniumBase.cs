@@ -5,6 +5,7 @@ namespace SeleniumBase
 {
 	public class SeleniumBase : IDisposable
 	{
+
 		protected BaseDriver _baseDriver;
 		protected IWebDriver Driver;
 
