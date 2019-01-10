@@ -24,8 +24,11 @@ namespace AtomicWriter
 		private void SetTestValues()
 		{
 			TestName.Text = Test.TestName;
-			Test.Instructions.ForEach(instruction => AddInstruction(instruction));
-		}
+            if (Test.Instructions != null)
+            {
+                Test.Instructions.ForEach(instruction => AddInstruction(instruction));
+            }
+        }
 
 		private void InstructionTypeChanged(object sender, RoutedEventArgs e)
 		{
