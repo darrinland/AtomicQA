@@ -1,5 +1,4 @@
 ﻿using AtomicReader.DataAccess;
-using AtomicReader.Objects;
 using System;
 using System.Windows.Forms;
 
@@ -7,56 +6,36 @@ namespace AtomicReader
 {
 	class Program
 	{
-		private static SeleniumBase.SeleniumBase _driver;
+		private static string _location = @"C:/Tests/test.json";
 
-		[STAThread]
 		static void Main(string[] args)
 		{
-			Console.WriteLine("FileLocation:");
-			var location = @"C:/Tests/test.json";
+			RunTestFile();
+		}
 
+		private static void RunTestFile()
+		{
+			var save = DataReader.LoadObject(_location);
+			save.Tests.ForEach(test =>
+			{
+				using (var testRunner = new TestRunner())
+				{
+					testRunner.RunTest(test);
+				}
+			});
+		}
+
+		[STAThread]
+		private static void GetTestFile()
+		{
 			var b = new OpenFileDialog
 			{
-				FileName = location
+				FileName = _location
 			};
 
 			if (b.ShowDialog() == DialogResult.OK)
 			{
-				location = b.FileName;
-			}
-			
-			var save = DataReader.LoadObject(location);
-			save.Tests.ForEach(test =>
-			{
-				RunTest(test);
-			});
-		}
-
-		public static void RunTest(Test test)
-		{
-			_driver = new SeleniumBase.SeleniumBase();
-			test.Instructions.ForEach(instruction =>
-			{
-				ExecuteInstruction(instruction);
-			});
-			_driver.Dispose();
-		}
-
-		public static void ExecuteGoToUrl(string url)
-		{
-			_driver.NavigateToUrl(url);
-		}
-
-		public static void ExecuteInstruction(Instruction instruction)
-		{
-			switch (instruction.InstructionType)
-			{
-				case Instruction.InstructionTypes.GoToUrl:
-					ExecuteGoToUrl(instruction.Payload);
-					break;
-				default:
-					Console.Write("InstructionType not Recognized");
-					break;
+				_location = b.FileName;
 			}
 		}
 	}

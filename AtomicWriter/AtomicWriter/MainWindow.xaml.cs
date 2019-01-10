@@ -127,7 +127,7 @@ namespace AtomicWriter
 				return;
 			}
 
-			var result = MessageBox.Show($"Are you sure you would like to delete the test {selectedTest}? ", "This operation cannot be undone.", MessageBoxButton.YesNo);
+			var result = MessageBox.Show($"Are you sure you would like to delete the test '{selectedTest}'? ", "This operation cannot be undone.", MessageBoxButton.YesNo);
 
 			if(result == MessageBoxResult.Yes)
 			{

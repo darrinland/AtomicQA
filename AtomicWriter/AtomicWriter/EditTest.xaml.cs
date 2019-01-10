@@ -1,17 +1,8 @@
 ﻿using AtomicWriter.Objects;
-using System;
+using OpenQA.Selenium;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace AtomicWriter
 {
@@ -38,6 +29,36 @@ namespace AtomicWriter
 		private void GetUpdatedValues()
 		{
 			Test.TestName = TestName.Text;
+
+			var instructions = InstructionsList.Children;
+			Test.Instructions = new List<Instruction>() { };
+			foreach (StackPanel instructionPanel in instructions)
+			{
+				ComboBox instructionTypeComboBox = (ComboBox)(instructionPanel).Children[0];
+				Instruction.InstructionTypes selectedInstructionType = (Instruction.InstructionTypes)instructionTypeComboBox.SelectedValue;
+				string payload = string.Empty;
+
+				switch (selectedInstructionType)
+				{
+					case Instruction.InstructionTypes.GoToUrl:
+						payload = ((TextBox)instructionPanel.Children[1]).Text;
+						break;
+					case Instruction.InstructionTypes.Click:
+						var xpath = ((TextBox)instructionPanel.Children[1]).Text;
+						var locator = new Locator() { LocatorType = Locator.LocatorTypes.XPath, Path = xpath };
+						payload = Newtonsoft.Json.JsonConvert.SerializeObject(locator);
+						break;
+					default:
+						MessageBox.Show("Error matching InstructionType");
+						break;
+				}
+
+				Test.Instructions.Add(new Instruction()
+				{
+					InstructionType = selectedInstructionType,
+					Payload = payload,
+				});
+			}
 		}
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -57,7 +78,7 @@ namespace AtomicWriter
 			{
 				ItemsSource = Instruction.GetInstructionTypes()
 			});
-			instructionPanel.Children.Add(new TextBox() {});
+			instructionPanel.Children.Add(new TextBox() { });
 
 			InstructionsList.Children.Add(instructionPanel);
 
