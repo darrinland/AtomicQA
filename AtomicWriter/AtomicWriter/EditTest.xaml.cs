@@ -85,6 +85,18 @@ namespace AtomicWriter
 				Text = text
 			});
 
+
+			var deleteInstructionButton = new Button()
+			{
+				Width = 50,
+				Content = new ContentControl()
+				{
+					Content = "Delete",
+				},
+			};
+			deleteInstructionButton.Click += new RoutedEventHandler(DeleteInstructionButton_Click);
+			instructionPanel.Children.Add(deleteInstructionButton);
+
 			InstructionsList.Children.Add(instructionPanel);
 		}
 
@@ -162,18 +174,19 @@ namespace AtomicWriter
 			instructionPanel.Children.Add(locatorSelection);
 			instructionPanel.Children.Add(new TextBox() { });
 
+			var deleteInstructionButton = new Button()
+			{
+				Width = 50,
+				Content = new ContentControl()
+				{
+					Content = "Delete",
+				},
+			};
+			deleteInstructionButton.Click += new RoutedEventHandler(DeleteInstructionButton_Click);
+			instructionPanel.Children.Add(deleteInstructionButton);
+
 			InstructionsList.Children.Add(instructionPanel);
 
-            var deleteInstructionButton = new Button()
-            {
-                Width = 50,
-                Content = new ContentControl()
-                {
-                    Content = "Delete",
-                },
-            };
-            deleteInstructionButton.Click += new RoutedEventHandler(DeleteInstructionButton_Click);
-            instructionPanel.Children.Add(deleteInstructionButton);
 		}
 	}
 }
