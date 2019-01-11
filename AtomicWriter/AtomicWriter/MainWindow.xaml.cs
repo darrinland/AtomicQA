@@ -26,7 +26,7 @@ namespace AtomicWriter
 
 		private void InitTestList()
 		{
-			if(_saveObject != null && _saveObject.Tests.Count > 0)
+			if(_saveObject != null)
 			{
 				TestsList.ItemsSource = _saveObject.Tests.Select(x => x.TestName);
 			}

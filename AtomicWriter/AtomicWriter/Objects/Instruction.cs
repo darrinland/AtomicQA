@@ -10,7 +10,8 @@ namespace AtomicWriter.Objects
 		public enum InstructionTypes
 		{
 			GoToUrl,
-			Click
+			Click,
+            Type
 		}
 
 		public static List<InstructionTypes> GetInstructionTypes()
@@ -18,7 +19,8 @@ namespace AtomicWriter.Objects
 			return new List<InstructionTypes>()
 			{
 				InstructionTypes.GoToUrl,
-				InstructionTypes.Click
+				InstructionTypes.Click,
+                InstructionTypes.Type,
 			};
 		}
 	}
