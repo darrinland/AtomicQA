@@ -18,9 +18,9 @@ namespace AtomicWriter
 	/// <summary>
 	/// Interaction logic for Window1.xaml
 	/// </summary>
-	public partial class ProjectSelection : MetroWindow
+	public partial class WelcomeScreen : MetroWindow
 	{
-		public ProjectSelection()
+		public WelcomeScreen()
 		{
 			InitializeComponent();
 		}
@@ -36,6 +36,13 @@ namespace AtomicWriter
 		{
 			var dashboard = new Dashboard();
 			dashboard.Show();
+			this.Close();
+		}
+
+		private void RunnerButton_Click(object sender, RoutedEventArgs e)
+		{
+			var runner = new TestRunner();
+			runner.Show();
 			this.Close();
 		}
 	}
