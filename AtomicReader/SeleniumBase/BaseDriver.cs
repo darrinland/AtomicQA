@@ -39,7 +39,7 @@ namespace SeleniumBase
 		{
 			WaitFor(location);
 			Input(location, text);
-		}
+        }
 
 		public void Input(By location, string text)
 		{
@@ -94,5 +94,20 @@ namespace SeleniumBase
 			var element = Driver.FindElement(location);
 			((IJavaScriptExecutor)Driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
 		}
+
+        public void SendKeys(By location, string keyString)
+        {
+            var key = Keys.Null;
+            if (keyString == "Return")
+            {
+                key = Keys.Return;
+            }
+            else if (keyString == "Tab")
+            {
+                key = Keys.Tab;
+            }
+
+            Driver.FindElement(location).SendKeys(key);
+        }
 	}
 }

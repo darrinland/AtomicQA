@@ -75,6 +75,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Objects\SendKeyInstruction.cs" />
     <Compile Include="ProjectSelection.xaml.cs">
       <DependentUpon>ProjectSelection.xaml</DependentUpon>
     </Compile>
