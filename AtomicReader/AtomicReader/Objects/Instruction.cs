@@ -9,8 +9,9 @@
 		{
 			GoToUrl,
 			Click,
-            Type,
+            InputText,
             Assert,
+            SendKeys,
 		}
 	}
 }

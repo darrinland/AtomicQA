@@ -93,5 +93,10 @@ namespace SeleniumBase
 		{
 			return ((ITakesScreenshot)Driver).GetScreenshot();
 		}
-	}
+
+        public void SendKeys(By location, string keyString)
+        {
+            _baseDriver.SendKeys(location, keyString);
+        }
+    }
 }

@@ -1,6 +1,8 @@
 ﻿using AtomicReader.Objects;
 using Newtonsoft.Json;
+using OpenQA.Selenium;
 using System;
+using System.Windows.Forms;
 
 namespace AtomicReader
 {
@@ -47,9 +49,12 @@ namespace AtomicReader
 					case Instruction.InstructionTypes.Click:
 						ExecuteClick(instruction.Payload);
 						break;
-					case Instruction.InstructionTypes.Type:
+					case Instruction.InstructionTypes.InputText:
 						ExecuteInput(instruction.Payload);
 						break;
+                    case Instruction.InstructionTypes.SendKeys:
+                        ExecuteSendKeys(instruction.Payload);
+                        break;
 					case Instruction.InstructionTypes.Assert:
 						ExecuteAssertValue(instruction.Payload);
 						break;
@@ -92,6 +97,13 @@ namespace AtomicReader
 			var locator = typedTextInstruction.Locator;
 			_driver.WaitToInput(Locator.GetByLocator(locator.LocatorType, locator.Path), typedTextInstruction.Text);
 		}
+
+        private void ExecuteSendKeys(string payload)
+        {
+            var sendKeysInstruction = JsonConvert.DeserializeObject<SendKeyInstruction>(payload);
+            var locator = sendKeysInstruction.Locator;
+            _driver.SendKeys(Locator.GetByLocator(locator.LocatorType, locator.Path), sendKeysInstruction.Key.ToString());
+        }
 
 		private void ExecuteAssertValue(string payload)
 		{
