@@ -11,7 +11,8 @@ namespace AtomicWriter.Objects
 		{
 			GoToUrl,
 			Click,
-            Type
+            Type,
+            Assert,
 		}
 
 		public static List<InstructionTypes> GetInstructionTypes()
@@ -21,6 +22,7 @@ namespace AtomicWriter.Objects
 				InstructionTypes.GoToUrl,
 				InstructionTypes.Click,
                 InstructionTypes.Type,
+                InstructionTypes.Assert,
 			};
 		}
 	}
