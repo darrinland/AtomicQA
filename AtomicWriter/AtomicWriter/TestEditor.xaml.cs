@@ -110,7 +110,7 @@ namespace AtomicWriter
 				return;
 			}
 
-			_saveObject = DataReader.LoadObject(_location);
+			_saveObject = DataReader.LoadObject<SaveObject>(_location);
 			InitTestList();
 		}
 

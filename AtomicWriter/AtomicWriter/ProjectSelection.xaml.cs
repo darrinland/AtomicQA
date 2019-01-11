@@ -31,5 +31,12 @@ namespace AtomicWriter
 			testEditor.Show();
 			this.Close();
 		}
+
+		private void DashboardButton_Click(object sender, RoutedEventArgs e)
+		{
+			var dashboard = new Dashboard();
+			dashboard.Show();
+			this.Close();
+		}
 	}
 }
