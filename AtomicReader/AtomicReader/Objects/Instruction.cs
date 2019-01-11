@@ -9,7 +9,8 @@
 		{
 			GoToUrl,
 			Click,
-            Type
+            Type,
+            Assert,
 		}
 	}
 }

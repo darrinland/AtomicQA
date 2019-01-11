@@ -38,7 +38,7 @@ namespace AtomicWriter
             var textInput = ((TextBox)instructionPanel.Children[3]);
 
             var selectedInstruction = (Instruction.InstructionTypes)instructionTypeSelection.SelectedItem;
-            if (selectedInstruction == Instruction.InstructionTypes.Click || selectedInstruction == Instruction.InstructionTypes.Type)
+            if (selectedInstruction == Instruction.InstructionTypes.Click || selectedInstruction == Instruction.InstructionTypes.Type || selectedInstruction == Instruction.InstructionTypes.Assert)
 			{
 				locatorSelection.Visibility = Visibility.Visible;
 			}
@@ -47,7 +47,7 @@ namespace AtomicWriter
 				locatorSelection.Visibility = Visibility.Collapsed;
 			}
 
-            if (selectedInstruction == Instruction.InstructionTypes.Type)
+            if (selectedInstruction == Instruction.InstructionTypes.Type || selectedInstruction == Instruction.InstructionTypes.Assert)
             {
                 textInput.Visibility = Visibility.Visible;
             }
@@ -88,6 +88,13 @@ namespace AtomicWriter
                 locator = inputTextType.Locator;
                 text = inputTextType.Locator.Path;
                 inputText = inputTextType.Text;
+            } 
+            else if (instruction.InstructionType == Instruction.InstructionTypes.Assert)
+            {
+                var assert = JsonConvert.DeserializeObject<AssertValue>(instruction.Payload);
+                locator = assert.Locator;
+                text = assert.Locator.Path;
+                inputText = assert.ExpectedValue;
             }
             else 
             {
@@ -98,8 +105,8 @@ namespace AtomicWriter
 			var locatorSelection = new ComboBox()
 			{
 				ItemsSource = Locator.GetLocatorTypes(),
-				Visibility = instruction.InstructionType == Instruction.InstructionTypes.Click || instruction.InstructionType == Instruction.InstructionTypes.Type ? Visibility.Visible : Visibility.Collapsed,
-				SelectedItem = instruction.InstructionType == Instruction.InstructionTypes.Click || instruction.InstructionType == Instruction.InstructionTypes.Type ? locator.LocatorType : Locator.LocatorTypes.Id,
+				Visibility = instruction.InstructionType == Instruction.InstructionTypes.Click || instruction.InstructionType == Instruction.InstructionTypes.Assert || instruction.InstructionType == Instruction.InstructionTypes.Type ? Visibility.Visible : Visibility.Collapsed,
+				SelectedItem = instruction.InstructionType == Instruction.InstructionTypes.Click || instruction.InstructionType == Instruction.InstructionTypes.Assert || instruction.InstructionType == Instruction.InstructionTypes.Type ? locator.LocatorType : Locator.LocatorTypes.Id,
 			};
 			instructionPanel.Children.Add(locatorSelection);
             instructionPanel.Children.Add(new TextBox()
@@ -109,8 +116,7 @@ namespace AtomicWriter
 
             var typedTextInput = new TextBox()
             {
-                Visibility = instruction.InstructionType == Instruction.InstructionTypes.Type ? Visibility.Visible : Visibility.Collapsed,
-                Name = "TextInput",
+                Visibility = instruction.InstructionType == Instruction.InstructionTypes.Type || instruction.InstructionType == Instruction.InstructionTypes.Assert ? Visibility.Visible : Visibility.Collapsed,
                 Text = inputText,
             };
             instructionPanel.Children.Add(typedTextInput);
@@ -164,6 +170,19 @@ namespace AtomicWriter
                             Text = textInput,
                         };
                         payload = JsonConvert.SerializeObject(input);
+                        break;
+                    case Instruction.InstructionTypes.Assert:
+
+                        xpath = ((TextBox)instructionPanel.Children[2]).Text;
+                        var expectedValue = ((TextBox)instructionPanel.Children[3]).Text;
+                        locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
+                        locator = new Locator() { LocatorType = locatorType, Path = xpath };
+                        AssertValue assertValue = new AssertValue()
+                        {
+                            Locator = locator,
+                            ExpectedValue = expectedValue,
+                        };
+                        payload = JsonConvert.SerializeObject(assertValue);
                         break;
                     default:
 						MessageBox.Show("Error matching InstructionType");
