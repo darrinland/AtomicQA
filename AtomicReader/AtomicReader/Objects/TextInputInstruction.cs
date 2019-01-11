@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AtomicReader.Objects
 {
-    public class AssertValue
+    public class TextInputInstruction
     {
         public Locator Locator { get; set; }
-        public string ExpectedValue { get; set; }
+        public string Text { get; set; }
     }
 }

@@ -122,8 +122,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Objects\AssertValue.cs" />
-    <Compile Include="Objects\TypedTextInput.cs" />
+    <Compile Include="Objects\AssertValueInstruction.cs" />
+    <Compile Include="Objects\TextInputInstruction.cs" />
     <Compile Include="Objects\Instruction.cs" />
     <Compile Include="Objects\Locator.cs" />
     <Compile Include="Objects\SaveObject.cs" />

@@ -97,14 +97,14 @@ namespace AtomicWriter
 			}
             else if (instruction.InstructionType == Instruction.InstructionTypes.InputText)
             {
-                var inputTextType = JsonConvert.DeserializeObject<TypedTextInput>(instruction.Payload);
+                var inputTextType = JsonConvert.DeserializeObject<TextInputInstruction>(instruction.Payload);
                 locator = inputTextType.Locator;
                 text = locator.Path;
                 inputText = inputTextType.Text;
             } 
             else if (instruction.InstructionType == Instruction.InstructionTypes.Assert)
             {
-                var assert = JsonConvert.DeserializeObject<AssertValue>(instruction.Payload);
+                var assert = JsonConvert.DeserializeObject<AssertValueInstruction>(instruction.Payload);
                 locator = assert.Locator;
                 text = locator.Path;
                 inputText = assert.ExpectedValue;
@@ -195,7 +195,7 @@ namespace AtomicWriter
                         var textInput = ((TextBox)instructionPanel.Children[3]).Text;
                         locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
                         locator = new Locator() { LocatorType = locatorType, Path = xpath };
-                        TypedTextInput input = new TypedTextInput()
+                        TextInputInstruction input = new TextInputInstruction()
                         {
                             Locator = locator,
                             Text = textInput,
@@ -207,7 +207,7 @@ namespace AtomicWriter
                         var expectedValue = ((TextBox)instructionPanel.Children[3]).Text;
                         locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
                         locator = new Locator() { LocatorType = locatorType, Path = xpath };
-                        AssertValue assertValue = new AssertValue()
+                        AssertValueInstruction assertValue = new AssertValueInstruction()
                         {
                             Locator = locator,
                             ExpectedValue = expectedValue,

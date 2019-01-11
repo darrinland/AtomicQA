@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AtomicWriter.Objects
 {
-    public class TypedTextInput
+    public class TextInputInstruction
     {
         public Locator Locator { get; set; }
         public string Text { get; set; }
