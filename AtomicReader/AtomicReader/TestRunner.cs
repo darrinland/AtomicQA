@@ -50,6 +50,9 @@ namespace AtomicReader
 					case Instruction.InstructionTypes.Type:
 						ExecuteInput(instruction.Payload);
 						break;
+                    case Instruction.InstructionTypes.Assert:
+
+                        break;
 					default:
 						Console.Write("InstructionType not Recognized");
 						break;
@@ -89,5 +92,17 @@ namespace AtomicReader
 			var locator = typedTextInstruction.Locator;
 			_driver.WaitToInput(Locator.GetByLocator(locator.LocatorType, locator.Path), typedTextInstruction.Text);
 		}
+
+        private void ExecuteAssertValue(string payload)
+        {
+            var assertValueInstruction = JsonConvert.DeserializeObject<AssertValue>(payload);
+            var locator = assertValueInstruction.Locator;
+            var expectedValue = assertValueInstruction.ExpectedValue;
+            var actualValue = _driver.WaitToGetText(Locator.GetByLocator(locator.LocatorType, locator.Path));
+            if (expectedValue != actualValue)
+            {
+                throw new Exception("Expected Value(" + expectedValue + ") does not match Actual Value(" + actualValue + ").");
+            }
+        }
 	}
 }
