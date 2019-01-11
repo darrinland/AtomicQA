@@ -1,4 +1,5 @@
 ﻿using AtomicReader.Objects;
+using OpenQA.Selenium;
 using System;
 
 namespace AtomicReader

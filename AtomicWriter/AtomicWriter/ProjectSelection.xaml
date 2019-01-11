@@ -11,7 +11,7 @@
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
         <TextBlock Margin="20px" FontSize="20px" HorizontalAlignment="Center">Welcome to AtomicQA</TextBlock>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Name="DashboardButton" IsEnabled="False">Test Dashboard (Coming Soon)</Button>
+            <Button Name="DashboardButton" Click="DashboardButton_Click">Test Dashboard</Button>
             <Button Name="EditorButton" Click="EditorButton_Click">Test Editor</Button>
             <Button Name="RunnerButton" IsEnabled="False">Test Runner (Coming Soon)</Button>
         </StackPanel>

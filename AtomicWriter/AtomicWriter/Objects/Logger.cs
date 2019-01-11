@@ -1,9 +1,9 @@
-﻿using AtomicReader.Objects;
+﻿using Newtonsoft.Json;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 
-namespace AtomicReader
+namespace AtomicWriter.Objects
 {
 	public class Log
 	{
@@ -11,6 +11,15 @@ namespace AtomicReader
 		public Instruction Instruction;
 		public Exception Exception;
 		public string ScreenshotLocation;
+
+		[JsonConstructor]
+		public Log(Test test, Instruction instruction, Exception exception, string screenshotLocation)
+		{
+			Test = test;
+			Instruction = instruction;
+			Exception = exception;
+			ScreenshotLocation = screenshotLocation;
+		}
 
 		public Log(Test test, Instruction instruction, Exception exception, Screenshot screenshot)
 		{
