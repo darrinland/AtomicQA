@@ -1,4 +1,4 @@
-﻿<Controls:MetroWindow x:Class="AtomicWriter.MainWindow"
+﻿<Controls:MetroWindow x:Class="AtomicWriter.TestEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,11 +7,12 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Icon="AtomicQA.png"
-        Title="Atomic QA"
+        Title="AtomicQA"
         Height="450"
         Width="800">
     <StackPanel Orientation="Vertical" >
         <StackPanel Name="ActionButtonBar" Orientation="Horizontal">
+            <Button Name="NavigateToWelcome" Click="NavigateToWelcome_Click">Back to Welcome Screen</Button>
             <Button Name="OpenTestSuiteButton" Click="OpenTestSuiteButton_Click">Open Test Suite</Button>
         </StackPanel>
         <TextBlock FontSize="20">TESTS:</TextBlock>

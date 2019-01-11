@@ -11,12 +11,12 @@ namespace AtomicWriter
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : MetroWindow
+	public partial class TestEditor : MetroWindow
 	{
 		private SaveObject _saveObject;
 		private string _location = @"C:\Tests\test.json";
 
-		public MainWindow()
+		public TestEditor()
 		{
 			InitializeComponent();
 			InitSaveObject();
@@ -134,6 +134,13 @@ namespace AtomicWriter
 				_saveObject.Tests.Remove(_saveObject.Tests.First(x => x.TestName == selectedTest));
 				SaveCurrentSaveObject();
 			}
+		}
+
+		private void NavigateToWelcome_Click(object sender, RoutedEventArgs e)
+		{
+			var projectSelection = new ProjectSelection();
+			projectSelection.Show();
+			this.Close();
 		}
 	}
 }

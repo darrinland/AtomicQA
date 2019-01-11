@@ -75,11 +75,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ProjectSelection.xaml.cs">
+      <DependentUpon>ProjectSelection.xaml</DependentUpon>
+    </Compile>
     <Page Include="EditTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="TestEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -92,10 +95,14 @@
     <Compile Include="EditTest.xaml.cs">
       <DependentUpon>EditTest.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="TestEditor.xaml.cs">
+      <DependentUpon>TestEditor.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProjectSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Objects\TypedTextInput.cs" />
@@ -131,6 +138,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="AtomicQA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TestEditor\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
