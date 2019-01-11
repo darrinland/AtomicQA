@@ -173,7 +173,6 @@ namespace AtomicWriter
                         payload = JsonConvert.SerializeObject(input);
                         break;
                     case Instruction.InstructionTypes.Assert:
-
                         xpath = ((TextBox)instructionPanel.Children[2]).Text;
                         var expectedValue = ((TextBox)instructionPanel.Children[3]).Text;
                         locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;

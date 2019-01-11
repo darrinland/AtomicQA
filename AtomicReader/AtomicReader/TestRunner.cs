@@ -51,7 +51,7 @@ namespace AtomicReader
 						ExecuteInput(instruction.Payload);
 						break;
                     case Instruction.InstructionTypes.Assert:
-
+                        ExecuteAssertValue(instruction.Payload);
                         break;
 					default:
 						Console.Write("InstructionType not Recognized");
