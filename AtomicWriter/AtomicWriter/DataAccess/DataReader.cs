@@ -28,9 +28,17 @@ namespace AtomicWriter.DataAccess
 			}
 		}
 
-		public static SaveObject LoadObject(string location)
+		public static T LoadObject<T>(string location)
 		{
-			return JsonConvert.DeserializeObject<SaveObject>(ReadFromFile(location));
+			var fileContents = ReadFromFile(location);
+			if (string.IsNullOrWhiteSpace(fileContents))
+			{
+				return default(T);
+			}
+			else
+			{
+				return JsonConvert.DeserializeObject<T>(fileContents);
+			}
 		}
 	}
 }

@@ -11,13 +11,15 @@ namespace AtomicReader
 		private static string _location = @"C:/Tests/test.json";
 		private static string _logLocation = @"C:/Tests/log.json";
 
+		[STAThread]
 		static void Main(string[] args)
 		{
 			RunTestFile();
 		}
-
+		
 		private static void RunTestFile()
 		{
+			GetTestFile();
 			var save = DataReader.LoadObject<SaveObject>(_location);
 			var logger = new Logger();
 			save.Tests.ForEach(test =>
@@ -30,8 +32,7 @@ namespace AtomicReader
 
 			DataWriter.Save(_logLocation, logger.GetLogs());
 		}
-
-		[STAThread]
+		
 		private static void GetTestFile()
 		{
 			var b = new OpenFileDialog

@@ -1,0 +1,21 @@
+﻿<Controls:MetroWindow x:Class="AtomicWriter.Dashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AtomicWriter"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+        Icon="AtomicQA.png"
+        Title="Dashboard" Height="450" Width="800">
+    <StackPanel Orientation="Vertical">
+        <TextBlock HorizontalAlignment="Center" FontSize="20" Margin="20">Dashboard</TextBlock>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button Name="OpenLogButton" Click="OpenLogButton_Click" Margin="5">Open Log</Button>
+            <Button Name="BackToWelcomeScreenButton" Click="BackToWelcomeScreenButton_Click" Margin="5">Back to Welcome Screen</Button>
+        </StackPanel>
+        <StackPanel Name="LogContents">
+            <TextBlock Name="LogListMessage" HorizontalAlignment="Center" Margin="12">Open a Log to See Breakdown</TextBlock>
+        </StackPanel>
+    </StackPanel>
+</Controls:MetroWindow>
