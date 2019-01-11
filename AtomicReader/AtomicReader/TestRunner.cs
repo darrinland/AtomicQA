@@ -86,7 +86,7 @@ namespace AtomicReader
 		{
 			var typedTextInstruction = Newtonsoft.Json.JsonConvert.DeserializeObject<TypedTextInput>(payload);
 			var locator = typedTextInstruction.Locator;
-			_driver.Input(Locator.GetByLocator(locator.LocatorType, locator.Path), typedTextInstruction.Text);
+			_driver.WaitToInput(Locator.GetByLocator(locator.LocatorType, locator.Path), typedTextInstruction.Text);
 		}
 	}
 }

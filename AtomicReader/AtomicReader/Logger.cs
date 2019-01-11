@@ -2,25 +2,22 @@
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AtomicReader
 {
 	public class Log
 	{
-		private readonly Test _test;
-		private readonly Instruction _instruction;
-		private readonly Exception _exception;
-		private readonly Screenshot _screenshot;
+		public Test Test;
+		public Instruction Instruction;
+		public Exception Exception;
+		public Screenshot Screenshot;
 
 		public Log(Test test, Instruction instruction, Exception exception, Screenshot screenshot)
 		{
-			_test = test;
-			_instruction = instruction;
-			_exception = exception;
-			_screenshot = screenshot;
+			Test = test;
+			Instruction = instruction;
+			Exception = exception;
+			Screenshot = screenshot;
 		}
 	}
 
@@ -31,6 +28,11 @@ namespace AtomicReader
 		public void AddLog(Log log)
 		{
 			_logs.Add(log);
+		}
+
+		public List<Log> GetLogs()
+		{
+			return _logs;
 		}
 	}
 }

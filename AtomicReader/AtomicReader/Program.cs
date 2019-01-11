@@ -1,5 +1,7 @@
 ﻿using AtomicReader.DataAccess;
+using AtomicReader.Objects;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace AtomicReader
@@ -7,6 +9,7 @@ namespace AtomicReader
 	class Program
 	{
 		private static string _location = @"C:/Tests/test.json";
+		private static string _logLocation = @"C:/Tests/log.json";
 
 		static void Main(string[] args)
 		{
@@ -15,7 +18,7 @@ namespace AtomicReader
 
 		private static void RunTestFile()
 		{
-			var save = DataReader.LoadObject(_location);
+			var save = DataReader.LoadObject<SaveObject>(_location);
 			var logger = new Logger();
 			save.Tests.ForEach(test =>
 			{
@@ -25,7 +28,7 @@ namespace AtomicReader
 				}
 			});
 
-			// TODO: Need to save logs somewhere for use in dashboard
+			DataWriter.Save(_logLocation, logger.GetLogs());
 		}
 
 		[STAThread]

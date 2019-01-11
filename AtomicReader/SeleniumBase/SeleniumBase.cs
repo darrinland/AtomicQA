@@ -39,7 +39,7 @@ namespace SeleniumBase
 			_baseDriver.WaitToInput(location, text);
 		}
 
-		public void Input(By location, string text)
+		private void Input(By location, string text)
 		{
 			_baseDriver.Input(location, text);
 		}
@@ -59,7 +59,7 @@ namespace SeleniumBase
 			return _baseDriver.WaitToGetText(location);
 		}
 
-		public string GetText(By location)
+		private string GetText(By location)
 		{
 			return _baseDriver.GetText(location);
 		}

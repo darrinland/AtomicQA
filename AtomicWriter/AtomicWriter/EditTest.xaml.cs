@@ -1,4 +1,5 @@
 ﻿using AtomicWriter.Objects;
+using MahApps.Metro.Controls;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Windows;
@@ -10,7 +11,7 @@ namespace AtomicWriter
 	/// Interaction logic for EditTest.xaml
 	/// </summary>
 
-	public partial class EditTest : Window
+	public partial class EditTest : MetroWindow
 	{
 		public Test Test { get; set; }
 

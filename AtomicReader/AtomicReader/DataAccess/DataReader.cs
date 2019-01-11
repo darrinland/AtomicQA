@@ -28,9 +28,9 @@ namespace AtomicReader.DataAccess
 			}
 		}
 
-		public static SaveObject LoadObject(string location)
+		public static T LoadObject<T>(string location)
 		{
-			return JsonConvert.DeserializeObject<SaveObject>(ReadFromFile(location));
+			return JsonConvert.DeserializeObject<T>(ReadFromFile(location));
 		}
 	}
 }
