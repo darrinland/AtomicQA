@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AtomicWriter.Objects
 {
-    public class AssertValue
+    public class AssertValueInstruction
     {
         public Locator Locator { get; set; }
         public string ExpectedValue { get; set; }

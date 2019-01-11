@@ -93,7 +93,7 @@ namespace AtomicReader
 
 		private void ExecuteInput(string payload)
 		{
-			var typedTextInstruction = Newtonsoft.Json.JsonConvert.DeserializeObject<TypedTextInput>(payload);
+			var typedTextInstruction = Newtonsoft.Json.JsonConvert.DeserializeObject<TextInputInstruction>(payload);
 			var locator = typedTextInstruction.Locator;
 			_driver.WaitToInput(Locator.GetByLocator(locator.LocatorType, locator.Path), typedTextInstruction.Text);
 		}
@@ -107,7 +107,7 @@ namespace AtomicReader
 
 		private void ExecuteAssertValue(string payload)
 		{
-			var assertValueInstruction = JsonConvert.DeserializeObject<AssertValue>(payload);
+			var assertValueInstruction = JsonConvert.DeserializeObject<AssertValueInstruction>(payload);
 			var locator = assertValueInstruction.Locator;
 			var expectedValue = assertValueInstruction.ExpectedValue;
 			var actualValue = _driver.WaitToGetText(Locator.GetByLocator(locator.LocatorType, locator.Path));
