@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="DataAccess\DataReader.cs" />
     <Compile Include="DataAccess\DataWriter.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Objects\Instruction.cs" />
     <Compile Include="Objects\Locator.cs" />
     <Compile Include="Objects\SaveObject.cs" />

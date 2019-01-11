@@ -7,7 +7,7 @@ namespace AtomicReader.DataAccess
 {
 	public static class DataWriter
 	{
-		public static void Save(string location, SaveObject saveObject)
+		public static void Save(string location, object saveObject)
 		{
 			WriteToFile(location, JsonConvert.SerializeObject(saveObject));
 		}
