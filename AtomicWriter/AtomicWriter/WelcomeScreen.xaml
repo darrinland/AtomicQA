@@ -1,4 +1,4 @@
-﻿<Controls:MetroWindow x:Class="AtomicWriter.ProjectSelection"
+﻿<Controls:MetroWindow x:Class="AtomicWriter.WelcomeScreen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,13 +7,13 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Icon="AtomicQA.png"
-        Title="AtomicQA" Height="150" Width="500">
+        Title="Atomic QA" Height="150" Width="500">
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
         <TextBlock Margin="20px" FontSize="20px" HorizontalAlignment="Center">Welcome to AtomicQA</TextBlock>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Name="DashboardButton" Click="DashboardButton_Click">Test Dashboard</Button>
-            <Button Name="EditorButton" Click="EditorButton_Click">Test Editor</Button>
-            <Button Name="RunnerButton" IsEnabled="False">Test Runner (Coming Soon)</Button>
+            <Button Name="DashboardButton" Click="DashboardButton_Click" Margin="5">Dashboard</Button>
+            <Button Name="EditorButton" Click="EditorButton_Click" Margin="5">Editor</Button>
+            <Button Name="RunnerButton" Click="RunnerButton_Click" Margin="5">Runner</Button>
         </StackPanel>
     </StackPanel>
 </Controls:MetroWindow>

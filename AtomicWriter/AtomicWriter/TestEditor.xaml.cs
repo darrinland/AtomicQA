@@ -138,7 +138,7 @@ namespace AtomicWriter
 
 		private void NavigateToWelcome_Click(object sender, RoutedEventArgs e)
 		{
-			var projectSelection = new ProjectSelection();
+			var projectSelection = new WelcomeScreen();
 			projectSelection.Show();
 			this.Close();
 		}

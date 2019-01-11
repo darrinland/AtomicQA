@@ -79,8 +79,11 @@
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Objects\Logger.cs" />
-    <Compile Include="ProjectSelection.xaml.cs">
-      <DependentUpon>ProjectSelection.xaml</DependentUpon>
+    <Compile Include="WelcomeScreen.xaml.cs">
+      <DependentUpon>WelcomeScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TestRunner.xaml.cs">
+      <DependentUpon>TestRunner.xaml</DependentUpon>
     </Compile>
     <Page Include="Dashboard.xaml">
       <SubType>Designer</SubType>
@@ -107,7 +110,11 @@
       <DependentUpon>TestEditor.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ProjectSelection.xaml">
+    <Page Include="WelcomeScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TestRunner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -148,8 +155,6 @@
   <ItemGroup>
     <Resource Include="AtomicQA.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TestEditor\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

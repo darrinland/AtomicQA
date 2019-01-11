@@ -87,5 +87,12 @@ namespace AtomicWriter
 				_logLocation = b.FileName;
 			}
 		}
+
+		private void BackToWelcomeScreenButton_Click(object sender, RoutedEventArgs e)
+		{
+			var projectSelection = new WelcomeScreen();
+			projectSelection.Show();
+			this.Close();
+		}
 	}
 }
