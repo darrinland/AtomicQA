@@ -1,5 +1,4 @@
 ﻿using AtomicReader.Objects;
-using OpenQA.Selenium;
 using System;
 
 namespace AtomicReader
@@ -26,7 +25,7 @@ namespace AtomicReader
 			{
 				test.Instructions.ForEach(instruction =>
 				{
-					ExecuteInstruction(test,instruction);
+					ExecuteInstruction(test, instruction);
 				});
 			}
 			catch
@@ -34,7 +33,7 @@ namespace AtomicReader
 				return;
 			}
 		}
-		
+
 		private void ExecuteInstruction(Test test, Instruction instruction)
 		{
 			try
@@ -54,14 +53,20 @@ namespace AtomicReader
 						Console.Write("InstructionType not Recognized");
 						break;
 				}
-			} catch(Exception e)
+			}
+			catch (Exception e)
 			{
 				try
 				{
 					_logger.AddLog(new Log(test, instruction, e, _driver.GetScreenshot()));
-				} catch
+				}
+				catch
 				{
 					_logger.AddLog(new Log(test, instruction, e, null));
+				}
+				finally
+				{
+					throw e;
 				}
 			}
 		}
@@ -77,11 +82,11 @@ namespace AtomicReader
 			_driver.WaitToClick(Locator.GetByLocator(locator.LocatorType, locator.Path));
 		}
 
-        private void ExecuteInput(string payload)
-        {
-            var typedTextInstruction = Newtonsoft.Json.JsonConvert.DeserializeObject<TypedTextInput>(payload);
-            var locator = typedTextInstruction.Locator;
-            _driver.Input(Locator.GetByLocator(locator.LocatorType, locator.Path), typedTextInstruction.Text);
-        }
+		private void ExecuteInput(string payload)
+		{
+			var typedTextInstruction = Newtonsoft.Json.JsonConvert.DeserializeObject<TypedTextInput>(payload);
+			var locator = typedTextInstruction.Locator;
+			_driver.Input(Locator.GetByLocator(locator.LocatorType, locator.Path), typedTextInstruction.Text);
+		}
 	}
 }
