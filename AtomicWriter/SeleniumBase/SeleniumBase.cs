@@ -1,11 +1,14 @@
 ﻿using OpenQA.Selenium;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SeleniumBase
 {
 	public class SeleniumBase : IDisposable
 	{
-
 		protected BaseDriver _baseDriver;
 		protected IWebDriver Driver;
 
@@ -94,9 +97,9 @@ namespace SeleniumBase
 			return ((ITakesScreenshot)Driver).GetScreenshot();
 		}
 
-        public void SendKeys(By location, string keyString)
-        {
-            _baseDriver.SendKeys(location, keyString);
-        }
-    }
+		public void SendKeys(By location, string keyString)
+		{
+			_baseDriver.SendKeys(location, keyString);
+		}
+	}
 }

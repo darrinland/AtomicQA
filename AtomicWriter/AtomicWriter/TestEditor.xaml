@@ -10,7 +10,7 @@
         Title="Test Editor"
         Height="450"
         Width="800">
-    <StackPanel Orientation="Vertical" >
+    <StackPanel Orientation="Vertical">
         <StackPanel Name="ActionButtonBar" Orientation="Horizontal">
             <Button Name="NavigateToWelcome" Click="NavigateToWelcome_Click">Back to Welcome Screen</Button>
             <Button Name="OpenTestSuiteButton" Click="OpenTestSuiteButton_Click">Open Test Suite</Button>
