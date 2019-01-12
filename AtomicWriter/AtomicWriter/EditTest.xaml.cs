@@ -1,9 +1,11 @@
 ﻿using AtomicWriter.Objects;
 using MahApps.Metro.Controls;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace AtomicWriter
 {
@@ -73,10 +75,13 @@ namespace AtomicWriter
 		{
 			var instructionPanel = new StackPanel()
 			{
-				Orientation = Orientation.Horizontal
+				Orientation = Orientation.Horizontal,
+                AllowDrop = true,
 			};
+            instructionPanel.MouseMove += new MouseEventHandler(panelDrag);
+            instructionPanel.Drop += new DragEventHandler(panel_Drop);
 
-			var instructionTypeSelection = new ComboBox()
+            var instructionTypeSelection = new ComboBox()
 			{
 				ItemsSource = Instruction.GetInstructionTypes(),
 				SelectedItem = instruction.InstructionType
@@ -166,6 +171,67 @@ namespace AtomicWriter
 			InstructionsList.Children.Add(instructionPanel);
 		}
 
+        private string getPanelData(StackPanel instructionPanel)
+        {
+            ComboBox instructionTypeComboBox = (ComboBox)(instructionPanel).Children[0];
+            Instruction.InstructionTypes selectedInstructionType = (Instruction.InstructionTypes)instructionTypeComboBox.SelectedValue;
+            string payload = string.Empty;
+
+            switch (selectedInstructionType)
+            {
+                case Instruction.InstructionTypes.GoToUrl:
+                    payload = ((TextBox)instructionPanel.Children[2]).Text;
+                    break;
+                case Instruction.InstructionTypes.Click:
+                    var xpath = ((TextBox)instructionPanel.Children[2]).Text;
+                    var locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
+
+                    var locator = new Locator() { LocatorType = locatorType, Path = xpath };
+                    payload = Newtonsoft.Json.JsonConvert.SerializeObject(locator);
+                    break;
+                case Instruction.InstructionTypes.InputText:
+                    xpath = ((TextBox)instructionPanel.Children[2]).Text;
+                    var textInput = ((TextBox)instructionPanel.Children[3]).Text;
+                    locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
+                    locator = new Locator() { LocatorType = locatorType, Path = xpath };
+                    TextInputInstruction input = new TextInputInstruction()
+                    {
+                        Locator = locator,
+                        Text = textInput,
+                    };
+                    payload = JsonConvert.SerializeObject(input);
+                    break;
+                case Instruction.InstructionTypes.Assert:
+                    xpath = ((TextBox)instructionPanel.Children[2]).Text;
+                    var expectedValue = ((TextBox)instructionPanel.Children[3]).Text;
+                    locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
+                    locator = new Locator() { LocatorType = locatorType, Path = xpath };
+                    AssertValueInstruction assertValue = new AssertValueInstruction()
+                    {
+                        Locator = locator,
+                        ExpectedValue = expectedValue,
+                    };
+                    payload = JsonConvert.SerializeObject(assertValue);
+                    break;
+                case Instruction.InstructionTypes.SendKeys:
+                    xpath = ((TextBox)instructionPanel.Children[2]).Text;
+                    locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
+                    locator = new Locator() { LocatorType = locatorType, Path = xpath };
+                    var keySelection = (System.Windows.Forms.Keys)((ComboBox)(instructionPanel).Children[4]).SelectedValue;
+                    SendKeyInstruction sendKeyInstruction = new SendKeyInstruction()
+                    {
+                        Locator = locator,
+                        Key = keySelection,
+                    };
+                    payload = JsonConvert.SerializeObject(sendKeyInstruction);
+                    break;
+                default:
+                    MessageBox.Show("Error matching InstructionType");
+                    break;
+            }
+            return payload;
+        }
+
 		private void GetUpdatedValues()
 		{
 			Test.TestName = TestName.Text;
@@ -174,64 +240,11 @@ namespace AtomicWriter
 			Test.Instructions = new List<Instruction>() { };
 			foreach (StackPanel instructionPanel in instructions)
 			{
-				ComboBox instructionTypeComboBox = (ComboBox)(instructionPanel).Children[0];
-				Instruction.InstructionTypes selectedInstructionType = (Instruction.InstructionTypes)instructionTypeComboBox.SelectedValue;
-				string payload = string.Empty;
-
-				switch (selectedInstructionType)
-				{
-					case Instruction.InstructionTypes.GoToUrl:
-						payload = ((TextBox)instructionPanel.Children[2]).Text;
-						break;
-					case Instruction.InstructionTypes.Click:
-						var xpath = ((TextBox)instructionPanel.Children[2]).Text;
-						var locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
-
-						var locator = new Locator() { LocatorType = locatorType, Path = xpath };
-						payload = Newtonsoft.Json.JsonConvert.SerializeObject(locator);
-						break;
-                    case Instruction.InstructionTypes.InputText:
-                        xpath = ((TextBox)instructionPanel.Children[2]).Text;
-                        var textInput = ((TextBox)instructionPanel.Children[3]).Text;
-                        locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
-                        locator = new Locator() { LocatorType = locatorType, Path = xpath };
-                        TextInputInstruction input = new TextInputInstruction()
-                        {
-                            Locator = locator,
-                            Text = textInput,
-                        };
-                        payload = JsonConvert.SerializeObject(input);
-                        break;
-                    case Instruction.InstructionTypes.Assert:
-                        xpath = ((TextBox)instructionPanel.Children[2]).Text;
-                        var expectedValue = ((TextBox)instructionPanel.Children[3]).Text;
-                        locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
-                        locator = new Locator() { LocatorType = locatorType, Path = xpath };
-                        AssertValueInstruction assertValue = new AssertValueInstruction()
-                        {
-                            Locator = locator,
-                            ExpectedValue = expectedValue,
-                        };
-                        payload = JsonConvert.SerializeObject(assertValue);
-                        break;
-                    case Instruction.InstructionTypes.SendKeys:
-                        xpath = ((TextBox)instructionPanel.Children[2]).Text;
-                        locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
-                        locator = new Locator() { LocatorType = locatorType, Path = xpath };
-                        var keySelection = (System.Windows.Forms.Keys)((ComboBox)(instructionPanel).Children[4]).SelectedValue;
-                        SendKeyInstruction sendKeyInstruction = new SendKeyInstruction()
-                        {
-                            Locator = locator,
-                            Key = keySelection,
-                        };
-                        payload = JsonConvert.SerializeObject(sendKeyInstruction);
-                        break;
-                    default:
-						MessageBox.Show("Error matching InstructionType");
-						break;
-				}
-
-				Test.Instructions.Add(new Instruction()
+                var payload = getPanelData(instructionPanel);
+                ComboBox instructionTypeComboBox = (ComboBox)(instructionPanel).Children[0];
+                Instruction.InstructionTypes selectedInstructionType = (Instruction.InstructionTypes)instructionTypeComboBox.SelectedValue;
+             
+                Test.Instructions.Add(new Instruction()
 				{
 					InstructionType = selectedInstructionType,
 					Payload = payload,
@@ -252,13 +265,61 @@ namespace AtomicWriter
             InstructionsList.Children.Remove(parentPanel);
         }
 
-		private void AddInstructionButton_Click(object sender, RoutedEventArgs e)
+        private void panelDrag(object sender, MouseEventArgs e)
+        {
+            StackPanel panel = sender as StackPanel;
+            if (panel != null && e.LeftButton == MouseButtonState.Pressed)
+            {
+                ComboBox instructionTypeComboBox = (ComboBox)(panel).Children[0];
+                Instruction.InstructionTypes selectedInstructionType = (Instruction.InstructionTypes)instructionTypeComboBox.SelectedValue;
+
+                int index = Test.Instructions.FindIndex(x => x.Payload == getPanelData(panel) && x.InstructionType == selectedInstructionType);
+
+                DragDrop.DoDragDrop(panel,
+                                     index.ToString(),
+                                     DragDropEffects.Move);
+
+            }
+        }
+
+        private void panel_Drop(object sender, DragEventArgs e)
+        {
+            StackPanel panel = sender as StackPanel;
+            if (panel != null)
+            {
+                if (e.Data.GetDataPresent(DataFormats.StringFormat))
+                {
+                    string data = (string)e.Data.GetData(DataFormats.StringFormat);
+                    var index = Convert.ToInt32(data);
+
+                    if (index >= 0 && index < Test.Instructions.Count)
+                    {
+                        var moveList = Test.Instructions[index];
+                        var movePanel = InstructionsList.Children[index];
+
+                        InstructionsList.Children.Remove(movePanel);
+                        Test.Instructions.Remove(moveList);
+
+                        int newIndex = InstructionsList.Children.IndexOf(panel);
+
+                        Test.Instructions.Insert(newIndex, moveList);
+                        InstructionsList.Children.Insert(newIndex, movePanel);
+                    }
+                }
+            }
+        }
+
+        private void AddInstructionButton_Click(object sender, RoutedEventArgs e)
 		{
-			var instructionPanel = new StackPanel()
-			{
-				Orientation = Orientation.Horizontal
+            var instructionPanel = new StackPanel()
+            {
+                Orientation = Orientation.Horizontal,
+                AllowDrop = true,
 			};
-			var instructionTypeSelection = new ComboBox()
+            instructionPanel.MouseMove += new MouseEventHandler(panelDrag);
+            instructionPanel.Drop += new DragEventHandler(panel_Drop);
+
+            var instructionTypeSelection = new ComboBox()
 			{
 				ItemsSource = Instruction.GetInstructionTypes()
 			};
