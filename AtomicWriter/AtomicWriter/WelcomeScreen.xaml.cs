@@ -41,7 +41,7 @@ namespace AtomicWriter
 
 		private void RunnerButton_Click(object sender, RoutedEventArgs e)
 		{
-			var runner = new TestRunner();
+			var runner = new TestsRunner();
 			runner.Show();
 			this.Close();
 		}
