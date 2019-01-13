@@ -1,4 +1,4 @@
-﻿<Controls:MetroWindow x:Class="AtomicWriter.TestRunner"
+﻿<Controls:MetroWindow x:Class="AtomicWriter.TestsRunner"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,5 +11,8 @@
     <StackPanel Orientation="Vertical">
         <TextBlock HorizontalAlignment="Center" FontSize="20" Padding="20">Test Runner</TextBlock>
         <Button Name="BackToWelcomeScreenButton" Click="BackToWelcomeScreenButton_Click">Return to Welcome Screen</Button>
+        <Button Name="OpenTestSuiteButton" Click="OpenTestSuiteButton_Click">Open Test Suite</Button>
+        <TextBlock Name="TestsFoundLabel" HorizontalAlignment="Center" Visibility="Collapsed"></TextBlock>
+        <Button Name="RunTestsButton" Click="RunTestsButton_Click" Visibility="Hidden">Run Tests</Button>
     </StackPanel>
 </Controls:MetroWindow>

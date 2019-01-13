@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtomicQA", "AtomicWriter\AtomicQA.csproj", "{854649ED-F6FC-4A5C-AE88-6E05EB28E1DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRunner", "TestRunner\TestRunner.csproj", "{47194186-E5BF-456C-B7FD-11D213EC46A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumBase", "SeleniumBase\SeleniumBase.csproj", "{77498445-5008-4072-8FA3-AA453C5EF593}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{854649ED-F6FC-4A5C-AE88-6E05EB28E1DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{854649ED-F6FC-4A5C-AE88-6E05EB28E1DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{854649ED-F6FC-4A5C-AE88-6E05EB28E1DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{854649ED-F6FC-4A5C-AE88-6E05EB28E1DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47194186-E5BF-456C-B7FD-11D213EC46A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47194186-E5BF-456C-B7FD-11D213EC46A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47194186-E5BF-456C-B7FD-11D213EC46A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47194186-E5BF-456C-B7FD-11D213EC46A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77498445-5008-4072-8FA3-AA453C5EF593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77498445-5008-4072-8FA3-AA453C5EF593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77498445-5008-4072-8FA3-AA453C5EF593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77498445-5008-4072-8FA3-AA453C5EF593}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A173A9C-A8FE-4C30-8D56-591C9CFE11A9}
+	EndGlobalSection
+EndGlobal

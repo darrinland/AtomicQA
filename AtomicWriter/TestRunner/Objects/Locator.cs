@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OpenQA.Selenium;
+using System.Collections.Generic;
 
 namespace AtomicWriter.Objects
 {
@@ -32,6 +33,11 @@ namespace AtomicWriter.Objects
 				LocatorTypes.PartialLinkText,
 				LocatorTypes.TagName
 			};
+		}
+		
+		public static By GetByLocator(LocatorTypes type, string path)
+		{
+			return (By)typeof(By).GetMethod(type.ToString()).Invoke(null, new object[] { path });
 		}
 	}
 }
