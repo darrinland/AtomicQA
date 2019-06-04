@@ -1,0 +1,24 @@
+[
+	{
+		"type":"navigate",
+		"payload":{ "URL":"http://www.google.com" }
+	},
+	{
+		"type":"input_text_to_element",
+		"payload": {
+			"locator":
+			{
+				"type":"name",
+				"payload":"q"
+			},
+			"input":"webdriver"}
+	},
+	{
+		"type":"input_text_to_element",
+		"payload":{"locator":{"type":"name","payload":"q"},"input":{"key":"ENTER"}}
+	},
+	{
+		"type":"title_contains_text",
+		"payload":{"text":"webdriver"}
+	}
+]

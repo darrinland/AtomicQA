@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html lang = "en-US">
+<head>
+	<meta charset = "UTF-8">
+	<title>Dynamic Loading - Simple</title>
+</head>
+<body>
+	<h1>Atomic QA</h1>
+	<div id="testContainer">
+
+	</div>
+
+	<button onclick="buttonpress()">Run Tests</button>
+	<script>
+		Main = { buttonHandler: () => { console.log("not loaded"); } }; function buttonpress() { Main.buttonHandler(); console.log(Main); }
+	</script>
+	<script data-main = "scripts/loader" src = "scripts/require.js"></script>
+</body>
+</html>
