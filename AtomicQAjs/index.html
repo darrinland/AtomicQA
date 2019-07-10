@@ -2,15 +2,17 @@
 <html lang = "en-US">
 <head>
 	<meta charset = "UTF-8">
-	<title>Dynamic Loading - Simple</title>
+	<title>AtomicQA</title>
+	<link rel="shortcut icon" href="./assets/images/AtomicQA.png" type="image/png">
+	<link href="./styles.css" rel="stylesheet"/>
 </head>
 <body>
-	<h1>Atomic QA</h1>
+	<div class="header">Atomic QA</div>
 	<div id="testContainer">
 
 	</div>
 
-	<button onclick="buttonpress()">Run Tests</button>
+	<button class="green" onclick="buttonpress()">Run Tests</button>
 	<script>
 		Main = { buttonHandler: () => { console.log("not loaded"); } }; function buttonpress() { Main.buttonHandler(); console.log(Main); }
 	</script>

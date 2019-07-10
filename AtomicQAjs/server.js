@@ -6,12 +6,10 @@ let fs = require("fs");
 
 var utils = require("./scripts/utils.js");
 
+// var tr = require("./scripts/testRunner.js");
+
 const port = 3000;
 var testSteps = [];
-
-// await inputTextToElement(driver, until, By.name("q"), "webdriver");
-// await inputTextToElement(driver, until, By.name("q"), webdriver.Key.ENTER);
-// await titleContainsText(driver, "webdriver");
 
 function result(test) {
 	testSteps = test;
@@ -41,6 +39,7 @@ async function handleRequest(request, response) {
 			);
 			if (exists) {
 				fs.readFile(file, function(error, data) {
+					console.log("reading!");
 					if (error) {
 						console.log("error...", error);
 						response.writeHead(500);
@@ -51,6 +50,7 @@ async function handleRequest(request, response) {
 								utils.mimeTypes[path.extname(lookup)]
 						};
 						response.writeHead(200, headers);
+						response.end(data);
 					}
 				});
 			} else {

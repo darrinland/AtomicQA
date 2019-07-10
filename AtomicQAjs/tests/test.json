@@ -11,7 +11,7 @@
 				"type":"name",
 				"payload":"q"
 			},
-			"input":"webdriver"}
+			"input":"alex"}
 	},
 	{
 		"type":"input_text_to_element",
@@ -19,6 +19,6 @@
 	},
 	{
 		"type":"title_contains_text",
-		"payload":{"text":"webdriver"}
+		"payload":{"text":"alex"}
 	}
 ]

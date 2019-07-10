@@ -1,0 +1,26 @@
+html, body {
+	font-family: sans-serif;
+	margin: 0px;
+	padding: 0px;
+}
+
+.header {
+	background-color: #4286f4;
+	color: white;
+	font-size: 20px;
+	padding: 10px;
+}
+
+button {
+	padding: 10px;
+	border:none;
+}
+
+button:hover {
+	opacity: 0.5;
+	cursor: pointer;
+}
+
+.green {
+	background-color: #56ff56
+}
