@@ -54,6 +54,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objects\AssertElementExistsInstruction.cs" />
     <Compile Include="Objects\AssertValueInstruction.cs" />
     <Compile Include="Objects\Instruction.cs" />
     <Compile Include="Objects\Locator.cs" />

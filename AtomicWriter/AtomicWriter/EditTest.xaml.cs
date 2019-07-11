@@ -1,4 +1,5 @@
 ﻿using AtomicWriter.Objects;
+using TestRunner.Objects;
 using MahApps.Metro.Controls;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -40,7 +41,8 @@ namespace AtomicWriter
 			var keySelection = ((ComboBox)instructionPanel.Children[4]);
 
 			var selectedInstruction = (Instruction.InstructionTypes)instructionTypeSelection.SelectedItem;
-			var displayLocatorSelection = selectedInstruction == Instruction.InstructionTypes.Click || selectedInstruction == Instruction.InstructionTypes.InputText || selectedInstruction == Instruction.InstructionTypes.Assert || selectedInstruction == Instruction.InstructionTypes.SendKeys;
+			var displayLocatorSelection = selectedInstruction == Instruction.InstructionTypes.Click || selectedInstruction == Instruction.InstructionTypes.InputText || selectedInstruction == Instruction.InstructionTypes.AssertValue || selectedInstruction == Instruction.InstructionTypes.SendKeys 
+                || selectedInstruction == Instruction.InstructionTypes.AssertElementExists;
 			if (displayLocatorSelection)
 			{
 				locatorSelection.Visibility = Visibility.Visible;
@@ -50,7 +52,7 @@ namespace AtomicWriter
 				locatorSelection.Visibility = Visibility.Collapsed;
 			}
 
-			if (selectedInstruction == Instruction.InstructionTypes.InputText || selectedInstruction == Instruction.InstructionTypes.Assert)
+			if (selectedInstruction == Instruction.InstructionTypes.InputText || selectedInstruction == Instruction.InstructionTypes.AssertValue)
 			{
 				textInput.Visibility = Visibility.Visible;
 			}
@@ -101,15 +103,20 @@ namespace AtomicWriter
 				locator = inputTextType.Locator;
 				text = locator.Path;
 				inputText = inputTextType.Text;
-			}
-			else if (instruction.InstructionType == Instruction.InstructionTypes.Assert)
-			{
-				var assert = JsonConvert.DeserializeObject<AssertValueInstruction>(instruction.Payload);
-				locator = assert.Locator;
-				text = locator.Path;
-				inputText = assert.ExpectedValue;
-			}
-			else if (instruction.InstructionType == Instruction.InstructionTypes.SendKeys)
+            }
+            else if (instruction.InstructionType == Instruction.InstructionTypes.AssertValue)
+            {
+                var assert = JsonConvert.DeserializeObject<AssertValueInstruction>(instruction.Payload);
+                locator = assert.Locator;
+                text = locator.Path;
+                inputText = assert.ExpectedValue;
+            }
+            else if (instruction.InstructionType == Instruction.InstructionTypes.AssertElementExists)
+            {
+                var assert = JsonConvert.DeserializeObject<AssertElementExistsInstruction>(instruction.Payload);
+                locator = assert.Locator;
+            }
+            else if (instruction.InstructionType == Instruction.InstructionTypes.SendKeys)
 			{
 				var sendKeyInstruction = JsonConvert.DeserializeObject<SendKeyInstruction>(instruction.Payload);
 				locator = sendKeyInstruction.Locator;
@@ -121,10 +128,11 @@ namespace AtomicWriter
 				text = instruction.Payload;
 			}
 
-			var displayLocatorSelection = instruction.InstructionType == Instruction.InstructionTypes.Click ||
-										  instruction.InstructionType == Instruction.InstructionTypes.Assert ||
-										  instruction.InstructionType == Instruction.InstructionTypes.InputText ||
-										  instruction.InstructionType == Instruction.InstructionTypes.SendKeys;
+            var displayLocatorSelection = instruction.InstructionType == Instruction.InstructionTypes.Click ||
+                                          instruction.InstructionType == Instruction.InstructionTypes.AssertValue ||
+                                          instruction.InstructionType == Instruction.InstructionTypes.InputText ||
+                                          instruction.InstructionType == Instruction.InstructionTypes.SendKeys ||
+                                          instruction.InstructionType == Instruction.InstructionTypes.AssertElementExists;
 			var locatorSelection = new ComboBox()
 			{
 				ItemsSource = Locator.GetLocatorTypes(),
@@ -139,7 +147,7 @@ namespace AtomicWriter
 
 			var typedTextInput = new TextBox()
 			{
-				Visibility = instruction.InstructionType == Instruction.InstructionTypes.InputText || instruction.InstructionType == Instruction.InstructionTypes.Assert ? Visibility.Visible : Visibility.Collapsed,
+				Visibility = instruction.InstructionType == Instruction.InstructionTypes.InputText || instruction.InstructionType == Instruction.InstructionTypes.AssertValue ? Visibility.Visible : Visibility.Collapsed,
 				Text = inputText,
 			};
 			instructionPanel.Children.Add(typedTextInput);
@@ -202,7 +210,7 @@ namespace AtomicWriter
 						};
 						payload = JsonConvert.SerializeObject(input);
 						break;
-					case Instruction.InstructionTypes.Assert:
+					case Instruction.InstructionTypes.AssertValue:
 						xpath = ((TextBox)instructionPanel.Children[2]).Text;
 						var expectedValue = ((TextBox)instructionPanel.Children[3]).Text;
 						locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
@@ -214,6 +222,18 @@ namespace AtomicWriter
 						};
 						payload = JsonConvert.SerializeObject(assertValue);
 						break;
+                    case Instruction.InstructionTypes.AssertElementExists:
+                        xpath= ((TextBox) instructionPanel.Children[2]).Text;
+                        expectedValue = ((TextBox) instructionPanel.Children[2]).Text;
+                        locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
+                        locator = new Locator() { LocatorType = locatorType, Path = xpath };
+                        AssertElementExistsInstruction assertElement = new AssertElementExistsInstruction()
+                        {
+                            Locator = locator,
+                            ExpectedValue = expectedValue,
+                        };
+                        payload = JsonConvert.SerializeObject((assertElement));
+                        break;
 					case Instruction.InstructionTypes.SendKeys:
 						xpath = ((TextBox)instructionPanel.Children[2]).Text;
 						locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
