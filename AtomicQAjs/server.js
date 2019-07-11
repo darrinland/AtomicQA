@@ -6,7 +6,8 @@ let fs = require("fs");
 
 var utils = require("./scripts/utils.js");
 
-// var tr = require("./scripts/testRunner.js");
+var tr = require("./scripts/testRunner.js");
+var testr = new tr.testRunner();
 
 const port = 3000;
 var testSteps = [];
@@ -28,7 +29,8 @@ async function handleRequest(request, response) {
 		};
 		response.writeHead(200, headers);
 		response.end();
-		await runTestRunner(testSteps);
+		await testr.runTestRunner(testSteps);
+		// await runTestRunner(testSteps);
 	} else {
 		let lookup = url === "/" ? "/index.html" : decodeURI(url);
 		let file = lookup.substring(1, lookup.length);
@@ -106,16 +108,9 @@ async function runTestRunner(test) {
 				case utils.STEP_TYPES.ACT.INPUT_TEXT_TO_ELEMENT:
 					let input = digestInput(webdriver, step.payload.input);
 					let locator = digestLocator(By, step.payload.locator);
-
 					console.log("input", input);
 					console.log("to ", locator);
 					console.log(step);
-					// await utils.inputTextToElement(
-					// 	driver,
-					// 	until,
-					// 	By.name(step.payload.locator.payload),
-					// 	input
-					// );
 					await driver
 						.wait(until.elementLocated(locator), timeout)
 						.then(element => {
