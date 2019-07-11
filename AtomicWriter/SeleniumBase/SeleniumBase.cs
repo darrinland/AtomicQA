@@ -24,7 +24,7 @@ namespace SeleniumBase
 			Driver.Dispose();
 		}
 
-		public void CreateChromeDriver(int timeoutSeconds = 15)
+		public void CreateChromeDriver(int timeoutSeconds = 30)
 		{
 			_baseDriver = new ChromeDriver(timeoutSeconds);
 			Driver = _baseDriver.Driver;

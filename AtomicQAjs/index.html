@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html lang = "en-US">
+<head>
+	<meta charset = "UTF-8">
+	<title>AtomicQA</title>
+	<link rel="shortcut icon" href="./assets/images/AtomicQA.png" type="image/png">
+	<link href="./styles.css" rel="stylesheet"/>
+</head>
+<body>
+	<div class="header">Atomic QA</div>
+	<div id="testContainer">
+
+	</div>
+
+	<button class="green" onclick="buttonpress()">Run Tests</button>
+	<script>
+		Main = { buttonHandler: () => { console.log("not loaded"); } }; function buttonpress() { Main.buttonHandler(); console.log(Main); }
+	</script>
+	<script data-main = "scripts/loader" src = "scripts/require.js"></script>
+</body>
+</html>
