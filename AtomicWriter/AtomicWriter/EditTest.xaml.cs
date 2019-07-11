@@ -29,11 +29,11 @@ namespace AtomicWriter
 		private void SetTestValues()
 		{
 			TestName.Text = Test.TestName;
-            if (Test.Instructions != null)
-            {
-                Test.Instructions.ForEach(instruction => AddInstruction(instruction));
-            }
-        }
+			if (Test.Instructions != null)
+			{
+				Test.Instructions.ForEach(instruction => AddInstruction(instruction));
+			}
+		}
 
         private ComboBox GetMoleculeComboBox()
         {
@@ -45,7 +45,7 @@ namespace AtomicWriter
 		private void InstructionTypeChanged(object sender, RoutedEventArgs e)
 		{
 			var instructionTypeSelection = ((ComboBox)sender);
-            StackPanel instructionPanel = ((StackPanel)instructionTypeSelection.Parent);
+			StackPanel instructionPanel = ((StackPanel)instructionTypeSelection.Parent);
 			var locatorSelection = ((ComboBox)instructionPanel.Children[1]);
             var textInput = ((TextBox)instructionPanel.Children[3]);
             var keySelection = ((ComboBox)instructionPanel.Children[4]);
@@ -56,14 +56,14 @@ namespace AtomicWriter
 
             locatorSelection.Visibility = displayLocatorSelection ? Visibility.Visible : Visibility.Collapsed;
 
-            if (selectedInstruction == Instruction.InstructionTypes.InputText || selectedInstruction == Instruction.InstructionTypes.Assert)
-            {
-                textInput.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                textInput.Visibility = Visibility.Collapsed;
-            }
+			if (selectedInstruction == Instruction.InstructionTypes.InputText || selectedInstruction == Instruction.InstructionTypes.Assert)
+			{
+				textInput.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				textInput.Visibility = Visibility.Collapsed;
+			}
 
             keySelection.Visibility = selectedInstruction == Instruction.InstructionTypes.SendKeys ? Visibility.Visible : Visibility.Collapsed;
             moleculeSelection.Visibility = selectedInstruction == Instruction.InstructionTypes.Molecule ? Visibility.Visible : Visibility.Collapsed;
@@ -87,8 +87,8 @@ namespace AtomicWriter
 
 			var text = string.Empty;
 			Locator locator = null;
-            var inputText = string.Empty;
-            System.Windows.Forms.Keys keySelection = 0;
+			var inputText = string.Empty;
+			System.Windows.Forms.Keys keySelection = 0;
 
 			if (instruction.InstructionType == Instruction.InstructionTypes.Click)
 			{
@@ -125,38 +125,38 @@ namespace AtomicWriter
 				text = instruction.Payload;
 			}
 
-            var displayLocatorSelection = instruction.InstructionType == Instruction.InstructionTypes.Click ||
-                                          instruction.InstructionType == Instruction.InstructionTypes.Assert ||
-                                          instruction.InstructionType == Instruction.InstructionTypes.InputText ||
-                                          instruction.InstructionType == Instruction.InstructionTypes.SendKeys;
-            var locatorSelection = new ComboBox()
+			var displayLocatorSelection = instruction.InstructionType == Instruction.InstructionTypes.Click ||
+										  instruction.InstructionType == Instruction.InstructionTypes.Assert ||
+										  instruction.InstructionType == Instruction.InstructionTypes.InputText ||
+										  instruction.InstructionType == Instruction.InstructionTypes.SendKeys;
+			var locatorSelection = new ComboBox()
 			{
 				ItemsSource = Locator.GetLocatorTypes(),
 				Visibility = displayLocatorSelection ? Visibility.Visible : Visibility.Collapsed,
 				SelectedItem = displayLocatorSelection ? locator.LocatorType : Locator.LocatorTypes.Id,
 			};
 			instructionPanel.Children.Add(locatorSelection);
-            instructionPanel.Children.Add(new TextBox()
-            {
-                Text = text
-            });
+			instructionPanel.Children.Add(new TextBox()
+			{
+				Text = text
+			});
 
-            var typedTextInput = new TextBox()
-            {
-                Visibility = instruction.InstructionType == Instruction.InstructionTypes.InputText || instruction.InstructionType == Instruction.InstructionTypes.Assert ? Visibility.Visible : Visibility.Collapsed,
-                Text = inputText,
-            };
-            instructionPanel.Children.Add(typedTextInput);
+			var typedTextInput = new TextBox()
+			{
+				Visibility = instruction.InstructionType == Instruction.InstructionTypes.InputText || instruction.InstructionType == Instruction.InstructionTypes.Assert ? Visibility.Visible : Visibility.Collapsed,
+				Text = inputText,
+			};
+			instructionPanel.Children.Add(typedTextInput);
 
-            var sendKeySelection = new ComboBox()
-            {
-                ItemsSource = SendKeyInstruction.GetSendKeyTypes(),
-                Visibility = instruction.InstructionType == Instruction.InstructionTypes.SendKeys ? Visibility.Visible : Visibility.Collapsed,
-                SelectedItem = keySelection,
-            };
-            instructionPanel.Children.Add(sendKeySelection);
+			var sendKeySelection = new ComboBox()
+			{
+				ItemsSource = SendKeyInstruction.GetSendKeyTypes(),
+				Visibility = instruction.InstructionType == Instruction.InstructionTypes.SendKeys ? Visibility.Visible : Visibility.Collapsed,
+				SelectedItem = keySelection,
+			};
+			instructionPanel.Children.Add(sendKeySelection);
 
-            var deleteInstructionButton = new Button()
+			var deleteInstructionButton = new Button()
 			{
 				Width = 50,
 				Content = new ContentControl()
@@ -293,19 +293,19 @@ namespace AtomicWriter
 			instructionPanel.Children.Add(locatorSelection);
 			instructionPanel.Children.Add(new TextBox() { });
 
-            var textInput = new TextBox()
-            {
-                Visibility = Visibility.Collapsed
-            };
-            instructionPanel.Children.Add(textInput);
+			var textInput = new TextBox()
+			{
+				Visibility = Visibility.Collapsed
+			};
+			instructionPanel.Children.Add(textInput);
 
-            var keySelection = new ComboBox()
-            {
-                ItemsSource = SendKeyInstruction.GetSendKeyTypes(),
-                Visibility = Visibility.Collapsed,
-                SelectedItem = Locator.LocatorTypes.Id,
-            };
-            instructionPanel.Children.Add(keySelection);
+			var keySelection = new ComboBox()
+			{
+				ItemsSource = SendKeyInstruction.GetSendKeyTypes(),
+				Visibility = Visibility.Collapsed,
+				SelectedItem = Locator.LocatorTypes.Id,
+			};
+			instructionPanel.Children.Add(keySelection);
 
             var moleculeSelection = GetMoleculeComboBox();
             instructionPanel.Children.Add((moleculeSelection));
