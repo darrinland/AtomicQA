@@ -58,6 +58,8 @@
     <Compile Include="Objects\Instruction.cs" />
     <Compile Include="Objects\Locator.cs" />
     <Compile Include="Objects\Logger.cs" />
+    <Compile Include="Objects\Molecule.cs" />
+    <Compile Include="Objects\MoleculeValueInstruction.cs" />
     <Compile Include="Objects\SaveObject.cs" />
     <Compile Include="Objects\SendKeyInstruction.cs" />
     <Compile Include="Objects\Test.cs" />

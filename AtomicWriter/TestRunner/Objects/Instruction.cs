@@ -14,6 +14,7 @@ namespace AtomicWriter.Objects
             InputText,
             Assert,
             SendKeys,
+            Molecule
 		}
 
 		public static List<InstructionTypes> GetInstructionTypes()
@@ -25,6 +26,7 @@ namespace AtomicWriter.Objects
                 InstructionTypes.InputText,
                 InstructionTypes.Assert,
                 InstructionTypes.SendKeys,
+                InstructionTypes.Molecule
 			};
 		}
 	}

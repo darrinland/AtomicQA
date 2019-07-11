@@ -66,7 +66,9 @@ namespace AtomicWriter
 		private void TestsList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			var selected = ((ListBox)sender).SelectedValue.ToString();
-			var editTestWindow = new EditTest(_saveObject.Tests.First(x => x.TestName == selected));
+            var selectedTest = _saveObject.Tests.First(x => x.TestName == selected);
+            var moleculesForSelected = GetEligibleMolecules(_saveObject.Tests, selectedTest);
+			var editTestWindow = new EditTest(selectedTest, moleculesForSelected);
 
 			var result = editTestWindow.ShowDialog();
 			if (result == true)
@@ -75,9 +77,17 @@ namespace AtomicWriter
 			}
 		}
 
+        private List<Test> GetEligibleMolecules(List<Test> tests, Test selectedTest = null)
+        {
+            var results = tests.Where(x => x.IsMolecule).ToList();
+            results.Remove(selectedTest);
+
+            return results;
+        }
+
 		private void NewTestButton_Click(object sender, RoutedEventArgs e)
 		{
-			var editTestWindow = new EditTest(new Test());
+			var editTestWindow = new EditTest(new Test(), GetEligibleMolecules(_saveObject.Tests));
 
 			var result = editTestWindow.ShowDialog();
 			if (result == true)
