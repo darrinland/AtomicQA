@@ -5,48 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AtomicQA"
         mc:Ignorable="d"
-        Title="Modules" Height="450" Width="800">
+        Title="Modules" Height="600" Width="1200">
     <Grid>
         <StackPanel Orientation="Vertical" Margin="0,0,-0.4,0">
             <TextBlock FontSize="25">Helix</TextBlock>
             <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Vertical" Width="175">
-                    <StackPanel Name="ModuleList">
-                
-                    </StackPanel>
-                    <Button Name="AddModule" Click="AddModuleHandler">Add Module</Button>
+                <StackPanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Height="Auto">
+                        <StackPanel Name="ModuleExpanders" Orientation="Vertical" Width="400">
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Button Click="AddModuleHandler" Background="GreenYellow">+ Add Module</Button>
                 </StackPanel>
-                <Border Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1">
-                    <StackPanel  Margin="10 0 0 0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Name="ModuleName" FontSize="20"></TextBlock>
-                            <Button Margin="10 0 0 0" Name="EditModuleButton" Foreground="DodgerBlue">✏</Button>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Vertical" Width="175">
-                                <StackPanel Name="RequirementList">
-
-                                </StackPanel>
-                                <Button Name="AddRequirement" Click="AddRequirement_OnClick">Add Requirement</Button>
-                            </StackPanel>
-                            <Border Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1">
-                                <StackPanel Orientation="Vertical" Margin="10 0 0 0">
-                                    <TextBlock FontSize="15" Name="RequirementName">Requirement 1</TextBlock>
-                                    <TextBlock Name="RequirementDescription" TextWrapping="Wrap" Width="250" FontStyle="Italic">Requirement DESCRIPTION balskdflaskdfjlaskdjflkasdjflkjsdf
-                                    lkasdjflkjasdlfkj
-                                    laksdjflkjasdf
-                                    eiwfjoiejfwlks
-                                    </TextBlock>
-                                    <TextBlock Margin="0 10 0 0" FontWeight="Bold">Test Cases</TextBlock>
-                                    <Button>Tc01</Button>
-                                    <Button>Tc01</Button>
-                                    <Button>Tc01</Button>
-                                    <Button>Add Test Case</Button>
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
+                <StackPanel Margin="10 0 0 0" >
+                    <TextBlock Name="RequirementTitle" FontSize="20">Requirement Title</TextBlock>
+                    <TextBlock Name="RequirementDetails" FontSize="14" FontStyle="Italic" Width="400" TextWrapping="Wrap">Requirement Description</TextBlock>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock FontSize="20" Margin="0 10 0 0">Test Cases</TextBlock>
+                        <Button VerticalAlignment="Bottom" Background="GreenYellow" Height="30" Margin="20 0 0 0">▶ Run All</Button>
                     </StackPanel>
-                </Border>
+                    <StackPanel Name="TestCases"></StackPanel>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>
