@@ -1,4 +1,5 @@
-﻿using AtomicWriter.Objects;
+﻿using AtomicWriter;
+using AtomicWriter.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -28,7 +29,25 @@ namespace AtomicQA
 						{
 							Title = "The user shall create a new requirement",
 							Details = "Blah blah QA Jargon about nonsense that developers have to do on their behalf which the qa peeps appreciate or whatevs",
-							TestCases = new List<Test>(){}
+							TestCases = new List<Test>()
+							{
+								new Test()
+								{
+									TestName = "TC01",
+								},
+								new Test()
+								{
+									TestName = "TC02",
+								},
+								new Test()
+								{
+									TestName = "TC03",
+								},
+								new Test()
+								{
+									TestName = "TC04",
+								}
+							}
 						}
 					}
 				},
@@ -41,7 +60,21 @@ namespace AtomicQA
 						{
 							Title = "Create Solicitation",
 							Details = "Do the other thing",
-							TestCases = new List<Test>(){}
+							TestCases = new List<Test>()
+							{
+								new Test()
+								{
+									TestName = "TC01",
+								},
+								new Test()
+								{
+									TestName = "TC02",
+								},
+								new Test()
+								{
+									TestName = "TC03",
+								},
+							}
 						},
 						new Requirement()
 						{
@@ -58,80 +91,67 @@ namespace AtomicQA
 
 		private void LoadModules()
 		{
-			StackPanel modulesPanel = ModuleList;
 			foreach (var module in _modules)
 			{
-				var moduleButton = new Button()
-				{
-					Content = module.Name,
-					DataContext = module
-				};
-				moduleButton.Click += ModuleButtonHandler;
-				modulesPanel.Children.Add(moduleButton);
+				CreateModuleExpander(module);
 			}
 
 			var firstModule = _modules.FirstOrDefault();
 			if (firstModule != null)
 			{
-				ShowModulePage(firstModule);
+				((Expander) ModuleExpanders.Children[0]).IsExpanded = true;
+
 			}
 		}
-		
-		private void ModuleButtonHandler(object sender, RoutedEventArgs e)
+
+		private void CreateModuleExpander(Module module)
 		{
-			Button modButton = (Button)sender;
-			TextBlock moduleName = ModuleName;
-			moduleName.Text = modButton.Content.ToString();
-			ShowModulePage((Module)modButton.DataContext);
-		}
-
-		private void ShowModulePage(Module selectedModule)
-		{
-			ModuleName.Text = selectedModule.Name + " Requirements";
-
-			//Clear Requirements
-			StackPanel reqPanel = RequirementList;
-			reqPanel.Children.Clear();
-			RequirementName.Text = "";
-			RequirementDescription.Text = "";
-
-			AddRequirement.DataContext = selectedModule;
-
-			//Display Requirements
-			StackPanel requirementPanel = RequirementList;
-			foreach (var requirement in selectedModule.Requirements)
+			var moduleExpander = new Expander()
 			{
-				var requirementButton = new Button()
+				Content = new StackPanel() { },
+				Header = module.Name,
+				DataContext = module
+			};
+
+			foreach (var requirement in module.Requirements)
+			{
+				var reqButton = new Button()
 				{
 					Content = requirement.Title,
 					DataContext = requirement
+
 				};
-				requirementButton.Click += RequirementButtonHandler;
-				requirementPanel.Children.Add(requirementButton);
+				reqButton.Click += RequirementButtonHandler;
+
+				((StackPanel)moduleExpander.Content).Children.Add(reqButton);
 			}
 
-			var firstReq = selectedModule.Requirements.FirstOrDefault();
-			if (firstReq != null)
-			{
-				TextBlock reqName = RequirementName;
-				reqName.Text = firstReq.Title;
-				TextBlock reqDescription = RequirementDescription;
-				reqDescription.Text = firstReq.Details;
-			}
+			ModuleExpanders.Children.Add(moduleExpander);
 		}
 
 		private void RequirementButtonHandler(object sender, RoutedEventArgs e)
 		{
-			Button reqButton = (Button)sender;
-			TextBlock reqName = RequirementName;
-			reqName.Text = reqButton.Content.ToString();
-			TextBlock reqDescription = RequirementDescription;
-			reqDescription.Text = ((Requirement)reqButton.DataContext).Details;
-		}
+			Requirement req = (Requirement) ((Button) sender).DataContext;
+			//Clear Side Panel
+			TestCases.Children.Clear();
 
+			//Show Selected Details
+			RequirementTitle.Text = req.Title;
+			RequirementDetails.Text = req.Details;
+			
+			foreach (var testCase in req.TestCases)
+			{
+				var tcButton = new Button()
+				{
+					Content = testCase.TestName,
+					DataContext = testCase
+				};
+				TestCases.Children.Add(tcButton);
+			}
+		}
+		
 		private void AddModuleHandler(object sender, RoutedEventArgs e)
 		{
-			StackPanel modulesPanel = ModuleList;
 			Module newMod = new Module()
 			{
 				Name = "New Module",
@@ -140,38 +160,14 @@ namespace AtomicQA
 
 			_modules.Add(newMod);
 
-			var moduleButton = new Button()
-			{
-				Content = newMod.Name,
-				DataContext = newMod
-			}; 
-
-			moduleButton.Click += ModuleButtonHandler;
-			modulesPanel.Children.Add(moduleButton);
+			CreateModuleExpander(newMod);
 		}
 
-		private void AddRequirement_OnClick(object sender, RoutedEventArgs e)
-		{
-			StackPanel requirementPanel = RequirementList;
-			Button addReqButton = (Button) sender;
-			Module module = (Module) addReqButton.DataContext;
-
-			Requirement newReq = new Requirement()
-			{
-				Title = "New Requirement",
-				Details = "New Description",
-				TestCases = new List<Test>()
-			};
-			module.Requirements.Add(newReq);
-
-			var requirementButton = new Button()
-			{
-				Content = newReq.Title,
-				DataContext = newReq
-			};
-			requirementButton.Click += RequirementButtonHandler;
-
-			requirementPanel.Children.Add(requirementButton);
-		}
-	}
+        private void NavigateToWelcome_Click(object sender, RoutedEventArgs e)
+        {
+            var projectSelection = new WelcomeScreen();
+            projectSelection.Show();
+            this.Close();
+        }
+    }
 }

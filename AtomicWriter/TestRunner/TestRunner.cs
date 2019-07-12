@@ -65,7 +65,10 @@ namespace TestRunner
                     case Instruction.InstructionTypes.AssertElementExists:
                         ExecuteAssertElementExists(instruction.Payload);
                         break;
-                    default:
+                    case Instruction.InstructionTypes.Molecule:
+                        ExecuteMolecule(instruction.Payload);
+                        break;
+					default:
 						Console.Write("InstructionType not Recognized");
 						break;
 				}
@@ -101,7 +104,7 @@ namespace TestRunner
 
 		private void ExecuteInput(string payload)
 		{
-			var typedTextInstruction = Newtonsoft.Json.JsonConvert.DeserializeObject<TextInputInstruction>(payload);
+			var typedTextInstruction = JsonConvert.DeserializeObject<TextInputInstruction>(payload);
 			var locator = typedTextInstruction.Locator;
 			_driver.WaitToInput(Locator.GetByLocator(locator.LocatorType, locator.Path), typedTextInstruction.Text);
 		}
@@ -124,6 +127,7 @@ namespace TestRunner
 				throw new Exception("Expected Value(" + expectedValue + ") does not match Actual Value(" + actualValue + ").");
 			}
         }
+
         private void ExecuteAssertElementExists(string payload)
         {
             var assertElementExistsInstruction = JsonConvert.DeserializeObject<AssertElementExistsInstruction>(payload);
@@ -137,5 +141,12 @@ namespace TestRunner
                 throw new Exception("Unable to find element By." + locator.LocatorType + " (" + locator.Path + ")");
             }
         }
-    }
+
+        private void ExecuteMolecule(string payload)
+        {
+            var moleculeInstruction = JsonConvert.DeserializeObject<MoleculeValueInstruction>(payload);
+            //var locator = moleculeInstruction.Locator;
+            var moleculeName = moleculeInstruction.moleculeName;
+        }
+	}
 }

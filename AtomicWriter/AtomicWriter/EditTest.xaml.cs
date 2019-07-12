@@ -3,8 +3,10 @@ using TestRunner.Objects;
 using MahApps.Metro.Controls;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using TestRunner.Objects;
 
 namespace AtomicWriter
 {
@@ -15,11 +17,13 @@ namespace AtomicWriter
 	public partial class EditTest : MetroWindow
 	{
 		public Test Test { get; set; }
+        public List<Test> Molecules { get; set; }
 
-		public EditTest(Test test)
+		public EditTest(Test test, List<Test> molecules)
 		{
 			InitializeComponent();
 			Test = test;
+            Molecules = molecules;
 			SetTestValues();
 		}
 
@@ -32,25 +36,26 @@ namespace AtomicWriter
 			}
 		}
 
+        private ComboBox GetMoleculeComboBox()
+        {
+            var comboBox = new ComboBox();
+            Molecules.ForEach(molecule => { comboBox.Items.Add(new TextBlock() { Text = molecule.TestName, DataContext = molecule }); });
+            return comboBox;
+        }
+
 		private void InstructionTypeChanged(object sender, RoutedEventArgs e)
 		{
 			var instructionTypeSelection = ((ComboBox)sender);
 			StackPanel instructionPanel = ((StackPanel)instructionTypeSelection.Parent);
 			var locatorSelection = ((ComboBox)instructionPanel.Children[1]);
-			var textInput = ((TextBox)instructionPanel.Children[3]);
-			var keySelection = ((ComboBox)instructionPanel.Children[4]);
+            var textInput = ((TextBox)instructionPanel.Children[3]);
+            var keySelection = ((ComboBox)instructionPanel.Children[4]);
+            var moleculeSelection = ((ComboBox) instructionPanel.Children[5]);
 
-			var selectedInstruction = (Instruction.InstructionTypes)instructionTypeSelection.SelectedItem;
-			var displayLocatorSelection = selectedInstruction == Instruction.InstructionTypes.Click || selectedInstruction == Instruction.InstructionTypes.InputText || selectedInstruction == Instruction.InstructionTypes.AssertValue || selectedInstruction == Instruction.InstructionTypes.SendKeys 
-                || selectedInstruction == Instruction.InstructionTypes.AssertElementExists;
-			if (displayLocatorSelection)
-			{
-				locatorSelection.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				locatorSelection.Visibility = Visibility.Collapsed;
-			}
+            var selectedInstruction = (Instruction.InstructionTypes)instructionTypeSelection.SelectedItem;
+            var displayLocatorSelection = selectedInstruction == Instruction.InstructionTypes.Click || selectedInstruction == Instruction.InstructionTypes.InputText || selectedInstruction == Instruction.InstructionTypes.AssertElementExists || selectedInstruction == Instruction.InstructionTypes.AssertValue ||  selectedInstruction == Instruction.InstructionTypes.SendKeys;
+
+            locatorSelection.Visibility = displayLocatorSelection ? Visibility.Visible : Visibility.Collapsed;
 
 			if (selectedInstruction == Instruction.InstructionTypes.InputText || selectedInstruction == Instruction.InstructionTypes.AssertValue)
 			{
@@ -61,15 +66,9 @@ namespace AtomicWriter
 				textInput.Visibility = Visibility.Collapsed;
 			}
 
-			if (selectedInstruction == Instruction.InstructionTypes.SendKeys)
-			{
-				keySelection.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				keySelection.Visibility = Visibility.Collapsed;
-			}
-		}
+            keySelection.Visibility = selectedInstruction == Instruction.InstructionTypes.SendKeys ? Visibility.Visible : Visibility.Collapsed;
+            moleculeSelection.Visibility = selectedInstruction == Instruction.InstructionTypes.Molecule ? Visibility.Visible : Visibility.Collapsed;
+        }
 
 		private void AddInstruction(Instruction instruction)
 		{
@@ -125,8 +124,12 @@ namespace AtomicWriter
 				text = locator.Path;
 				keySelection = sendKeyInstruction.Key;
 			}
-			else
-			{
+            //else if (instruction.InstructionType == Instruction.InstructionTypes.Molecule)
+            //{
+            //    //var moleculeInstruction = JsonConvert.DeserializeObject<MoleculeValueInstruction>(instruction.Payload);
+            //}
+            else 
+            {
 				text = instruction.Payload;
 			}
 
@@ -229,26 +232,26 @@ namespace AtomicWriter
                         expectedValue = ((TextBox) instructionPanel.Children[2]).Text;
                         locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
                         locator = new Locator() { LocatorType = locatorType, Path = xpath };
-                        AssertElementExistsInstruction assertElement = new AssertElementExistsInstruction()
+                        AssertElementExistsInstruction assertElement = new AssertElementExistsInstruction();
+						payload = JsonConvert.SerializeObject(locator);
+						break;
+                    case Instruction.InstructionTypes.SendKeys:
+                        xpath = ((TextBox)instructionPanel.Children[2]).Text;
+                        locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
+                        locator = new Locator() { LocatorType = locatorType, Path = xpath };
+                        var keySelection = (System.Windows.Forms.Keys)((ComboBox)(instructionPanel).Children[4]).SelectedValue;
+                        SendKeyInstruction sendKeyInstruction = new SendKeyInstruction()
                         {
                             Locator = locator,
-                            ExpectedValue = expectedValue,
+                            Key = keySelection,
                         };
-                        payload = JsonConvert.SerializeObject((assertElement));
+                        payload = JsonConvert.SerializeObject(sendKeyInstruction);
                         break;
-					case Instruction.InstructionTypes.SendKeys:
-						xpath = ((TextBox)instructionPanel.Children[2]).Text;
-						locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
-						locator = new Locator() { LocatorType = locatorType, Path = xpath };
-						var keySelection = (System.Windows.Forms.Keys)((ComboBox)(instructionPanel).Children[4]).SelectedValue;
-						SendKeyInstruction sendKeyInstruction = new SendKeyInstruction()
-						{
-							Locator = locator,
-							Key = keySelection,
-						};
-						payload = JsonConvert.SerializeObject(sendKeyInstruction);
-						break;
-					default:
+                    case Instruction.InstructionTypes.Molecule:
+                        var text = ((ComboBox)instructionPanel.Children[5]).Text;
+                        payload = text;
+                        break;
+                    default:
 						MessageBox.Show("Error matching InstructionType");
 						break;
 				}
@@ -262,17 +265,26 @@ namespace AtomicWriter
 		}
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
-		{
+        {
+            Test.IsMolecule = false;
 			GetUpdatedValues();
 			Window.GetWindow(this).DialogResult = true;
 			Window.GetWindow(this).Close();
 		}
 
-		private void DeleteInstructionButton_Click(object sender, RoutedEventArgs e)
-		{
-			var parentPanel = ((StackPanel)((Button)sender).Parent);
-			InstructionsList.Children.Remove(parentPanel);
-		}
+        private void SaveAsMolecule_OnClick(object sender, RoutedEventArgs e)
+        {
+            Test.IsMolecule = true;
+            GetUpdatedValues();
+            Window.GetWindow(this).DialogResult = true;
+            Window.GetWindow(this).Close();
+        }
+
+        private void DeleteInstructionButton_Click(object sender, RoutedEventArgs e)
+        {
+            var parentPanel = ((StackPanel)((Button)sender).Parent);
+            InstructionsList.Children.Remove(parentPanel);
+        }
 
 		private void AddInstructionButton_Click(object sender, RoutedEventArgs e)
 		{
@@ -312,7 +324,10 @@ namespace AtomicWriter
 			};
 			instructionPanel.Children.Add(keySelection);
 
-			var deleteInstructionButton = new Button()
+            var moleculeSelection = GetMoleculeComboBox();
+            instructionPanel.Children.Add((moleculeSelection));
+
+            var deleteInstructionButton = new Button()
 			{
 				Width = 50,
 				Content = new ContentControl()
@@ -323,8 +338,8 @@ namespace AtomicWriter
 			deleteInstructionButton.Click += new RoutedEventHandler(DeleteInstructionButton_Click);
 			instructionPanel.Children.Add(deleteInstructionButton);
 
-			InstructionsList.Children.Add(instructionPanel);
+            InstructionsList.Children.Add(instructionPanel);
 
 		}
-	}
+    }
 }

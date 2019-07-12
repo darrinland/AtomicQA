@@ -15,7 +15,8 @@ namespace AtomicWriter.Objects
             AssertValue,
             SendKeys,
             AssertElementExists,
-        }
+            Molecule
+		}
 
 		public static List<InstructionTypes> GetInstructionTypes()
 		{
@@ -27,7 +28,8 @@ namespace AtomicWriter.Objects
                 InstructionTypes.AssertValue,
                 InstructionTypes.SendKeys,
                 InstructionTypes.AssertElementExists,
-            };
+                InstructionTypes.Molecule
+			};
 		}
 	}
 }
