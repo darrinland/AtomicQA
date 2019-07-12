@@ -285,6 +285,7 @@ namespace AtomicWriter
 		{
 			var instructionPanel = new StackPanel()
 			{
+				Margin = new Thickness(0,5,0,0),
 				Orientation = Orientation.Horizontal
 			};
 			var instructionTypeSelection = new ComboBox()
