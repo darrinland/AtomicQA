@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestRunner.Objects;
 
 namespace TestRunner
 {
@@ -26,13 +25,13 @@ namespace TestRunner
 			_driver.Dispose();
 		}
 
-		public void RunTest(Test test)
+		public void RunTest(Test test, List<Test> tests)
 		{
 			try
 			{
 				test.Instructions.ForEach(instruction =>
 				{
-					ExecuteInstruction(test, instruction);
+					ExecuteInstruction(test, instruction, tests);
 				});
 			}
 			catch
@@ -41,7 +40,7 @@ namespace TestRunner
 			}
 		}
 
-		private void ExecuteInstruction(Test test, Instruction instruction)
+		private void ExecuteInstruction(Test test, Instruction instruction, List<Test> tests)
 		{
 			try
 			{
@@ -63,7 +62,7 @@ namespace TestRunner
 						ExecuteAssertValue(instruction.Payload);
 						break;
                     case Instruction.InstructionTypes.Molecule:
-                        ExecuteMolecule(instruction.Payload);
+                        ExecuteMolecule(instruction.Payload, tests);
                         break;
 					default:
 						Console.Write("InstructionType not Recognized");
@@ -124,11 +123,10 @@ namespace TestRunner
 			}
 		}
 
-        private void ExecuteMolecule(string payload)
+        private void ExecuteMolecule(string payload, List<Test> tests)
         {
-            var moleculeInstruction = JsonConvert.DeserializeObject<MoleculeValueInstruction>(payload);
-            //var locator = moleculeInstruction.Locator;
-            var moleculeName = moleculeInstruction.moleculeName;
+            var selectedMolecule = tests.First(t => payload.Equals(t.TestName));
+            RunTest(selectedMolecule, tests);
         }
 	}
 }

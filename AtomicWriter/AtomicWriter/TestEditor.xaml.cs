@@ -67,8 +67,8 @@ namespace AtomicWriter
 		{
 			var selected = ((ListBox)sender).SelectedValue.ToString();
             var selectedTest = _saveObject.Tests.First(x => x.TestName == selected);
-            var moleculesForSelected = GetEligibleMolecules(_saveObject.Tests, selectedTest);
-			var editTestWindow = new EditTest(selectedTest, moleculesForSelected);
+            var eligibleTests = GetEligibleTests(_saveObject.Tests, selectedTest);
+			var editTestWindow = new EditTest(selectedTest, eligibleTests);
 
 			var result = editTestWindow.ShowDialog();
 			if (result == true)
@@ -77,17 +77,23 @@ namespace AtomicWriter
 			}
 		}
 
-        private List<Test> GetEligibleMolecules(List<Test> tests, Test selectedTest = null)
+        private List<Test> GetEligibleTests(List<Test> tests, Test selectedTest = null)
         {
-            var results = tests.Where(x => x.IsMolecule).ToList();
-            results.Remove(selectedTest);
-
-            return results;
+            var eligibleTests = new List<Test>();
+            tests.ForEach(test =>
+            {
+                if (selectedTest != null && !test.TestName.Equals(selectedTest.TestName))
+                {
+                    eligibleTests.Add(test);
+                }
+            });
+            eligibleTests.Remove(selectedTest);
+            return eligibleTests;
         }
 
 		private void NewTestButton_Click(object sender, RoutedEventArgs e)
 		{
-			var editTestWindow = new EditTest(new Test(), GetEligibleMolecules(_saveObject.Tests));
+			var editTestWindow = new EditTest(new Test(), GetEligibleTests(_saveObject.Tests));
 
 			var result = editTestWindow.ShowDialog();
 			if (result == true)

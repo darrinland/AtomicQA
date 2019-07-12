@@ -80,6 +80,9 @@
     <Compile Include="Modules.xaml.cs">
       <DependentUpon>Modules.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Name Prompt.xaml.cs">
+      <DependentUpon>Name Prompt.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WelcomeScreen.xaml.cs">
       <DependentUpon>WelcomeScreen.xaml</DependentUpon>
     </Compile>
@@ -91,6 +94,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Name Prompt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
