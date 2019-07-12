@@ -9,14 +9,14 @@
         WindowStartupLocation="CenterScreen"
         Title="Edit Test" Height="450" Width="800">
     <ScrollViewer>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Margin="5" Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <TextBlock>Test Name: </TextBlock>
-                <TextBox Name="TestName"></TextBox>
+                <TextBlock VerticalAlignment="Center">Test Name: </TextBlock>
+                <TextBox Name="TestName" Margin="10 0 0 0"  MinWidth="150"></TextBox>
             </StackPanel>
             <StackPanel Orientation="Vertical" Name="InstructionsList"/>
-            <Button Name="AddInstructionButton" Click="AddInstructionButton_Click">Add Instruction</Button>
-            <Button Name="SaveButton" Click="SaveButton_Click">Save</Button>
+            <Button Margin="0 5 0 0" Width="150" Name="AddInstructionButton" Click="AddInstructionButton_Click">Add Instruction</Button>
+            <Button Margin="0 5 0 0" Width="150" Name="SaveButton" Click="SaveButton_Click">Save</Button>
         </StackPanel>
     </ScrollViewer>
 </Controls:MetroWindow>
