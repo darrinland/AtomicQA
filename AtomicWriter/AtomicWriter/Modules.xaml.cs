@@ -146,18 +146,33 @@ namespace AtomicQA
 			var editModuleButton = new Button()
 			{
 				Content = "✏",
-				Padding = new Thickness(0,0,0,0),
+				Padding = new Thickness(0, 0, 0, 0),
 				DataContext = module,
 				Background = new SolidColorBrush(Colors.Transparent),
 				Foreground = new SolidColorBrush(Colors.White),
 				Width = 20,
 				Height = 20,
 				FontSize = 10,
-				Margin = new Thickness(20,0,0,0)
+				Margin = new Thickness(20, 0, 0, 0)
 			};
 			editModuleButton.Click += EditModule_click;
 			expanderHeader.Children.Add(editModuleButton);
-			
+
+			var deleteModuleButton = new Button()
+			{
+				Content = "🚫",
+				Padding = new Thickness(0, 0, 0, 0),
+				DataContext = module,
+				Background = new SolidColorBrush(Colors.Transparent),
+				Foreground = new SolidColorBrush(Colors.White),
+				Width = 20,
+				Height = 20,
+				FontSize = 10,
+				Margin = new Thickness(5, 0, 0, 0)
+			};
+			deleteModuleButton.Click += DeleteModule_click;
+			expanderHeader.Children.Add(deleteModuleButton);
+
 			var requirementsStack = new StackPanel();
 
 			var moduleExpander = new Expander()
@@ -233,6 +248,28 @@ namespace AtomicQA
 					m.IsExpanded = true;
 				}
 				SaveProject();
+			}
+		}
+
+		private void DeleteModule_click(object sender, RoutedEventArgs e)
+		{
+			var module = (Module)((Button)sender).DataContext;
+
+			string messageBoxText = "Are you sure you want to delete " + module.Name + "?";
+			string caption = "Remove " + module.Name;
+			MessageBoxButton btnMessageBox = MessageBoxButton.YesNo;
+			MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+			MessageBoxResult result = MessageBox.Show(messageBoxText, caption, btnMessageBox, icnMessageBox);
+
+			if (result == MessageBoxResult.Yes)
+			{
+				_project.Modules.Remove(module);
+				SaveProject();
+				LoadModules();
+				foreach (Expander m in ModuleExpanders.Children)
+				{
+					m.IsExpanded = true;
+				}
 			}
 		}
 
