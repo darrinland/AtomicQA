@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using TestRunner.Objects;
 
 namespace AtomicWriter
@@ -38,7 +39,7 @@ namespace AtomicWriter
         private ComboBox GetMoleculeComboBox()
         {
             var comboBox = new ComboBox();
-            Molecules.ForEach(molecule => { comboBox.Items.Add(new TextBlock() { Text = molecule.TestName, DataContext = molecule }); });
+            Molecules.ForEach(molecule => { comboBox.Items.Add(new TextBlock() { Text = molecule.TestName, DataContext = molecule,Margin = new Thickness(5, 0, 0, 0),  }); });
             return comboBox;
         }
 
@@ -73,7 +74,8 @@ namespace AtomicWriter
 		{
 			var instructionPanel = new StackPanel()
 			{
-				Orientation = Orientation.Horizontal
+				Orientation = Orientation.Horizontal,
+				Margin = new Thickness(0,5,0,0)
 			};
 
 			var instructionTypeSelection = new ComboBox()
@@ -131,6 +133,7 @@ namespace AtomicWriter
 										  instruction.InstructionType == Instruction.InstructionTypes.SendKeys;
 			var locatorSelection = new ComboBox()
 			{
+				Margin = new Thickness(5, 0, 0, 0),
 				ItemsSource = Locator.GetLocatorTypes(),
 				Visibility = displayLocatorSelection ? Visibility.Visible : Visibility.Collapsed,
 				SelectedItem = displayLocatorSelection ? locator.LocatorType : Locator.LocatorTypes.Id,
@@ -138,11 +141,13 @@ namespace AtomicWriter
 			instructionPanel.Children.Add(locatorSelection);
 			instructionPanel.Children.Add(new TextBox()
 			{
+				Margin = new Thickness(5, 0, 0, 0),
 				Text = text
 			});
 
 			var typedTextInput = new TextBox()
 			{
+				Margin = new Thickness(5, 0, 0, 0),
 				Visibility = instruction.InstructionType == Instruction.InstructionTypes.InputText || instruction.InstructionType == Instruction.InstructionTypes.Assert ? Visibility.Visible : Visibility.Collapsed,
 				Text = inputText,
 			};
@@ -150,6 +155,7 @@ namespace AtomicWriter
 
 			var sendKeySelection = new ComboBox()
 			{
+				Margin = new Thickness(5, 0, 0, 0),
 				ItemsSource = SendKeyInstruction.GetSendKeyTypes(),
 				Visibility = instruction.InstructionType == Instruction.InstructionTypes.SendKeys ? Visibility.Visible : Visibility.Collapsed,
 				SelectedItem = keySelection,
@@ -158,11 +164,17 @@ namespace AtomicWriter
 
 			var deleteInstructionButton = new Button()
 			{
-				Width = 50,
+				Margin = new Thickness(5, 0, 0, 0),
 				Content = new ContentControl()
 				{
-					Content = "Delete",
+					Content = "🚫",
 				},
+				Width=25,
+				Height = 25,
+				Background = new SolidColorBrush(Colors.PaleVioletRed),
+				Foreground = new SolidColorBrush(Colors.White),
+				Padding = new Thickness(0,0,0,0),
+				FontSize = 10
 			};
 			deleteInstructionButton.Click += new RoutedEventHandler(DeleteInstructionButton_Click);
 			instructionPanel.Children.Add(deleteInstructionButton);
@@ -277,6 +289,7 @@ namespace AtomicWriter
 			};
 			var instructionTypeSelection = new ComboBox()
 			{
+				Margin = new Thickness(5, 0, 0, 0),
 				ItemsSource = Instruction.GetInstructionTypes()
 			};
 
@@ -285,22 +298,28 @@ namespace AtomicWriter
 
 			var locatorSelection = new ComboBox()
 			{
+				Margin = new Thickness(5, 0, 0, 0),
 				ItemsSource = Locator.GetLocatorTypes(),
 				Visibility = Visibility.Collapsed,
 				SelectedItem = Locator.LocatorTypes.Id,
 			};
 
 			instructionPanel.Children.Add(locatorSelection);
-			instructionPanel.Children.Add(new TextBox() { });
+			instructionPanel.Children.Add(new TextBox()
+			{
+				Margin = new Thickness(5, 0, 0, 0),
+			});
 
 			var textInput = new TextBox()
 			{
+				Margin = new Thickness(5, 0, 0, 0),
 				Visibility = Visibility.Collapsed
 			};
 			instructionPanel.Children.Add(textInput);
 
 			var keySelection = new ComboBox()
 			{
+				Margin=new Thickness(5,0,0,0),
 				ItemsSource = SendKeyInstruction.GetSendKeyTypes(),
 				Visibility = Visibility.Collapsed,
 				SelectedItem = Locator.LocatorTypes.Id,
@@ -311,13 +330,20 @@ namespace AtomicWriter
             instructionPanel.Children.Add((moleculeSelection));
 
             var deleteInstructionButton = new Button()
-			{
-				Width = 50,
-				Content = new ContentControl()
-				{
-					Content = "Delete",
-				},
-			};
+            {
+	            Margin = new Thickness(5, 0, 0, 0),
+	            Content = new ContentControl()
+	            {
+		            Content = "🚫",
+	            },
+	            Width = 25,
+	            Height = 25,
+	            Background = new SolidColorBrush(Colors.PaleVioletRed),
+	            Foreground = new SolidColorBrush(Colors.White),
+	            Padding = new Thickness(0, 0, 0, 0),
+	            FontSize = 10
+            };
+
 			deleteInstructionButton.Click += new RoutedEventHandler(DeleteInstructionButton_Click);
 			instructionPanel.Children.Add(deleteInstructionButton);
 
