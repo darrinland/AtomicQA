@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:AtomicWriter"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Icon="AtomicQA.png"
         Title="Test Runner" Height="450" Width="800">
     <StackPanel Orientation="Vertical">
