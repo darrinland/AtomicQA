@@ -2,6 +2,7 @@
 using AtomicWriter.Objects;
 using MahApps.Metro.Controls;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -86,12 +87,12 @@ namespace AtomicWriter
 		{
 			var logger = new Logger();
 			_saveObject.Tests.ForEach(test =>
-			{
-				using (var testRunner = new TestRunner.TestRunner(logger))
+            {
+                using (var testRunner = new TestRunner.TestRunner(logger))
 				{
-					testRunner.RunTest(test);
+					testRunner.RunTest(test, _saveObject.Tests);
 				}
-			});
+            });
 
 			DataWriter.Save(_logLocation, logger.GetLogs());
 		}

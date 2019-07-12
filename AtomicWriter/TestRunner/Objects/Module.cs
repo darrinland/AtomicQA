@@ -3,6 +3,12 @@ using AtomicWriter.Objects;
 
 namespace AtomicQA
 {
+	public class Project
+	{
+		public string Name { get; set; }
+		public List<Module> Modules { get; set; }
+	}
+
 	public class Module
 	{
 		public string Name { get; set; }
