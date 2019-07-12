@@ -7,11 +7,12 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Icon="AtomicQA.png"
+        WindowStartupLocation="CenterScreen"
         Title="Atomic QA" Height="250" Width="500">
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
         <TextBlock Margin="20px" FontSize="20px" HorizontalAlignment="Center">Welcome to AtomicQA</TextBlock>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Name="ModulesButton" Click="ModulesButton_OnClick">Modules</Button>
+            <Button Name="ModulesButton" Click="ModulesButton_OnClick" Margin="5">Open Project</Button>
             <Button Name="EditorButton" Click="EditorButton_Click" Margin="5">Editor</Button>
             <Button Name="RunnerButton" Click="RunnerButton_Click" Margin="5">Runner</Button>
         </StackPanel>
