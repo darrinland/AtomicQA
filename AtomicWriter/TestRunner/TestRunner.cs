@@ -148,5 +148,10 @@ namespace TestRunner
             //var locator = moleculeInstruction.Locator;
             var moleculeName = moleculeInstruction.moleculeName;
         }
-	}
+
+        public void WaitTime(int milliseconds)
+        {
+            _driver.WaitTime(milliseconds);
+        }
+    }
 }

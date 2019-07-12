@@ -128,6 +128,11 @@ namespace AtomicWriter
             //{
             //    //var moleculeInstruction = JsonConvert.DeserializeObject<MoleculeValueInstruction>(instruction.Payload);
             //}
+            else if (instruction.InstructionType == Instruction.InstructionTypes.WaitTime)
+            {
+                var waitTimeInstruction = JsonConvert.DeserializeObject<WaitTimeInstruction>(instruction.Payload);
+                text = waitTimeInstruction.waitTime;
+            }
             else 
             {
 				text = instruction.Payload;
@@ -152,7 +157,7 @@ namespace AtomicWriter
 
 			var typedTextInput = new TextBox()
 			{
-				Visibility = instruction.InstructionType == Instruction.InstructionTypes.InputText || instruction.InstructionType == Instruction.InstructionTypes.AssertValue ? Visibility.Visible : Visibility.Collapsed,
+				Visibility = instruction.InstructionType == Instruction.InstructionTypes.InputText || instruction.InstructionType == Instruction.InstructionTypes.AssertValue || instruction.InstructionType == Instruction.InstructionTypes.WaitTime ? Visibility.Visible : Visibility.Collapsed,
 				Text = inputText,
 			};
 			instructionPanel.Children.Add(typedTextInput);
@@ -232,8 +237,12 @@ namespace AtomicWriter
                         expectedValue = ((TextBox) instructionPanel.Children[2]).Text;
                         locatorType = (Locator.LocatorTypes)((ComboBox)(instructionPanel).Children[1]).SelectedValue;
                         locator = new Locator() { LocatorType = locatorType, Path = xpath };
-                        AssertElementExistsInstruction assertElement = new AssertElementExistsInstruction();
-						payload = JsonConvert.SerializeObject(locator);
+                        AssertElementExistsInstruction assertElement = new AssertElementExistsInstruction()
+                        {
+                            Locator = locator,
+                            ExpectedValue = expectedValue,
+                        };
+                        payload = JsonConvert.SerializeObject(assertElement);
 						break;
                     case Instruction.InstructionTypes.SendKeys:
                         xpath = ((TextBox)instructionPanel.Children[2]).Text;
@@ -250,6 +259,14 @@ namespace AtomicWriter
                     case Instruction.InstructionTypes.Molecule:
                         var text = ((ComboBox)instructionPanel.Children[5]).Text;
                         payload = text;
+                        break;
+                    case Instruction.InstructionTypes.WaitTime:
+                        text = ((TextBox)instructionPanel.Children[2]).Text;
+                        WaitTimeInstruction waitTimeInstruction = new WaitTimeInstruction()
+                        {
+                            waitTime = text,
+                        };
+                        payload = JsonConvert.SerializeObject(waitTimeInstruction);
                         break;
                     default:
 						MessageBox.Show("Error matching InstructionType");
