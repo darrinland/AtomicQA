@@ -10,6 +10,5 @@ namespace TestRunner.Objects
     public class AssertElementExistsInstruction
     {
         public Locator Locator { get; set; }
-        public string ExpectedValue { get; set; }
     }
 }
