@@ -101,5 +101,5 @@ namespace SeleniumBase
 		{
 			_baseDriver.SendKeys(location, keyString);
 		}
-	}
+    }
 }

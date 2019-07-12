@@ -85,6 +85,7 @@ namespace SeleniumBase
 		public void WaitFor(By location)
 		{
 			Wait.Until(ExpectedConditions.ElementIsVisible(location));
+            
 		}
 
 		public virtual void Click(By location)

@@ -115,6 +115,8 @@ namespace AtomicWriter
             {
                 var assert = JsonConvert.DeserializeObject<AssertElementExistsInstruction>(instruction.Payload);
                 locator = assert.Locator;
+                text = locator.Path;
+
             }
             else if (instruction.InstructionType == Instruction.InstructionTypes.SendKeys)
 			{
