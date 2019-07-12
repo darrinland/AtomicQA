@@ -68,6 +68,9 @@ namespace TestRunner
                     case Instruction.InstructionTypes.Molecule:
                         ExecuteMolecule(instruction.Payload);
                         break;
+                    case Instruction.InstructionTypes.WaitTime:
+                        ExecuteWaitTime(instruction.Payload);
+                        break;
 					default:
 						Console.Write("InstructionType not Recognized");
 						break;
@@ -149,9 +152,10 @@ namespace TestRunner
             var moleculeName = moleculeInstruction.moleculeName;
         }
 
-        public void WaitTime(int milliseconds)
+        public void ExecuteWaitTime(string payload)
         {
-            _driver.WaitTime(milliseconds);
+            var waitTime = JsonConvert.DeserializeObject<WaitTimeInstruction>(payload);
+            System.Threading.Thread.Sleep(Int32.Parse(waitTime.waitTime));
         }
     }
 }

@@ -156,7 +156,7 @@ namespace AtomicWriter
 
 			var typedTextInput = new TextBox()
 			{
-				Visibility = instruction.InstructionType == Instruction.InstructionTypes.InputText || instruction.InstructionType == Instruction.InstructionTypes.AssertValue || instruction.InstructionType == Instruction.InstructionTypes.WaitTime ? Visibility.Visible : Visibility.Collapsed,
+				Visibility = instruction.InstructionType == Instruction.InstructionTypes.InputText || instruction.InstructionType == Instruction.InstructionTypes.AssertValue ? Visibility.Visible : Visibility.Collapsed,
 				Text = inputText,
 			};
 			instructionPanel.Children.Add(typedTextInput);

@@ -112,10 +112,5 @@ namespace SeleniumBase
 
 			Driver.FindElement(location).SendKeys(key);
 		}
-
-        public void WaitTime(int milliseconds)
-        {
-            System.Threading.Thread.Sleep(milliseconds);
-        }
     }
 }

@@ -102,9 +102,5 @@ namespace SeleniumBase
 			_baseDriver.SendKeys(location, keyString);
 		}
 
-        public void WaitTime(int milliseconds)
-        {
-            _baseDriver.WaitTime(milliseconds);
-        }
     }
 }
