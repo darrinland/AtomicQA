@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using TestRunner.Objects;
 
 namespace AtomicWriter
 {
@@ -30,24 +29,40 @@ namespace AtomicWriter
 		private void SetTestValues()
 		{
 			TestName.Text = Test.TestName;
-			if (Test.Instructions != null)
-			{
-				Test.Instructions.ForEach(instruction => AddInstruction(instruction));
-			}
-		}
+            Test.Instructions?.ForEach(instruction => AddInstruction(instruction));
+        }
 
-        private ComboBox GetMoleculeComboBox()
+        private ComboBox GetMoleculeComboBox(string selectedItem = "")
         {
             var comboBox = new ComboBox();
-            Molecules.ForEach(molecule => { comboBox.Items.Add(new TextBlock() { Text = molecule.TestName, DataContext = molecule }); });
+            comboBox.ItemsSource = GetMoleculeNames();
+
+            Molecules.ForEach(molecule =>
+            {
+                if (!string.IsNullOrWhiteSpace(selectedItem) && selectedItem.Equals(molecule.TestName))
+                {
+                    comboBox.SelectedItem = molecule.TestName;
+                }
+            });
             return comboBox;
         }
 
-		private void InstructionTypeChanged(object sender, RoutedEventArgs e)
+        private List<string> GetMoleculeNames()
+        {
+            var moleculeNames = new List<string>();
+            Molecules.ForEach(molecule =>
+            {
+                moleculeNames.Add(molecule.TestName);
+            });
+            return moleculeNames;
+        }
+
+        private void InstructionTypeChanged(object sender, RoutedEventArgs e)
 		{
 			var instructionTypeSelection = ((ComboBox)sender);
 			StackPanel instructionPanel = ((StackPanel)instructionTypeSelection.Parent);
 			var locatorSelection = ((ComboBox)instructionPanel.Children[1]);
+            var textBox = ((TextBox) instructionPanel.Children[2]);
             var textInput = ((TextBox)instructionPanel.Children[3]);
             var keySelection = ((ComboBox)instructionPanel.Children[4]);
             var moleculeSelection = ((ComboBox) instructionPanel.Children[5]);
@@ -57,15 +72,11 @@ namespace AtomicWriter
 
             locatorSelection.Visibility = displayLocatorSelection ? Visibility.Visible : Visibility.Collapsed;
 
-			if (selectedInstruction == Instruction.InstructionTypes.InputText || selectedInstruction == Instruction.InstructionTypes.AssertValue)
-			{
-				textInput.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				textInput.Visibility = Visibility.Collapsed;
-			}
-
+            if (selectedInstruction == Instruction.InstructionTypes.InputText || selectedInstruction == Instruction.InstructionTypes.AssertValue)
+            {
+                textBox.Visibility = selectedInstruction == Instruction.InstructionTypes.Molecule ? Visibility.Collapsed : Visibility.Visible;
+            }
+            
             keySelection.Visibility = selectedInstruction == Instruction.InstructionTypes.SendKeys ? Visibility.Visible : Visibility.Collapsed;
             moleculeSelection.Visibility = selectedInstruction == Instruction.InstructionTypes.Molecule ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -132,7 +143,7 @@ namespace AtomicWriter
                 var waitTimeInstruction = JsonConvert.DeserializeObject<WaitTimeInstruction>(instruction.Payload);
                 text = waitTimeInstruction.waitTime;
             }
-            else 
+            else
             {
 				text = instruction.Payload;
 			}
@@ -149,10 +160,12 @@ namespace AtomicWriter
 				SelectedItem = displayLocatorSelection ? locator.LocatorType : Locator.LocatorTypes.Id,
 			};
 			instructionPanel.Children.Add(locatorSelection);
-			instructionPanel.Children.Add(new TextBox()
-			{
-				Text = text
-			});
+
+            instructionPanel.Children.Add(new TextBox()
+            {
+                Text = text,
+                Visibility = instruction.InstructionType == Instruction.InstructionTypes.Molecule ? Visibility.Collapsed : Visibility.Visible
+            });
 
 			var typedTextInput = new TextBox()
 			{
@@ -169,7 +182,11 @@ namespace AtomicWriter
 			};
 			instructionPanel.Children.Add(sendKeySelection);
 
-			var deleteInstructionButton = new Button()
+            var moleculeSelection = GetMoleculeComboBox(instruction.Payload);
+            moleculeSelection.Visibility = instruction.InstructionType == Instruction.InstructionTypes.Molecule ? Visibility.Visible : Visibility.Collapsed;
+            instructionPanel.Children.Add(moleculeSelection);
+
+            var deleteInstructionButton = new Button()
 			{
 				Width = 50,
 				Content = new ContentControl()
@@ -279,19 +296,10 @@ namespace AtomicWriter
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            Test.IsMolecule = false;
 			GetUpdatedValues();
 			Window.GetWindow(this).DialogResult = true;
 			Window.GetWindow(this).Close();
 		}
-
-        private void SaveAsMolecule_OnClick(object sender, RoutedEventArgs e)
-        {
-            Test.IsMolecule = true;
-            GetUpdatedValues();
-            Window.GetWindow(this).DialogResult = true;
-            Window.GetWindow(this).Close();
-        }
 
         private void DeleteInstructionButton_Click(object sender, RoutedEventArgs e)
         {
@@ -352,7 +360,6 @@ namespace AtomicWriter
 			instructionPanel.Children.Add(deleteInstructionButton);
 
             InstructionsList.Children.Add(instructionPanel);
-
 		}
     }
 }
