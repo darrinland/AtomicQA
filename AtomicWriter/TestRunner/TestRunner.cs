@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestRunner.Objects;
 
 namespace TestRunner
 {
@@ -61,6 +62,9 @@ namespace TestRunner
 					case Instruction.InstructionTypes.Assert:
 						ExecuteAssertValue(instruction.Payload);
 						break;
+                    case Instruction.InstructionTypes.Molecule:
+                        ExecuteMolecule(instruction.Payload);
+                        break;
 					default:
 						Console.Write("InstructionType not Recognized");
 						break;
@@ -96,7 +100,7 @@ namespace TestRunner
 
 		private void ExecuteInput(string payload)
 		{
-			var typedTextInstruction = Newtonsoft.Json.JsonConvert.DeserializeObject<TextInputInstruction>(payload);
+			var typedTextInstruction = JsonConvert.DeserializeObject<TextInputInstruction>(payload);
 			var locator = typedTextInstruction.Locator;
 			_driver.WaitToInput(Locator.GetByLocator(locator.LocatorType, locator.Path), typedTextInstruction.Text);
 		}
@@ -119,5 +123,12 @@ namespace TestRunner
 				throw new Exception("Expected Value(" + expectedValue + ") does not match Actual Value(" + actualValue + ").");
 			}
 		}
+
+        private void ExecuteMolecule(string payload)
+        {
+            var moleculeInstruction = JsonConvert.DeserializeObject<MoleculeValueInstruction>(payload);
+            //var locator = moleculeInstruction.Locator;
+            var moleculeName = moleculeInstruction.moleculeName;
+        }
 	}
 }
