@@ -1,4 +1,5 @@
-﻿using AtomicWriter.Objects;
+﻿using AtomicWriter;
+using AtomicWriter.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -161,5 +162,12 @@ namespace AtomicQA
 
 			CreateModuleExpander(newMod);
 		}
-	}
+
+        private void NavigateToWelcome_Click(object sender, RoutedEventArgs e)
+        {
+            var projectSelection = new WelcomeScreen();
+            projectSelection.Show();
+            this.Close();
+        }
+    }
 }

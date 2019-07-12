@@ -9,6 +9,7 @@
     <Grid>
         <StackPanel Orientation="Vertical" Margin="0,0,-0.4,0">
             <TextBlock FontSize="25">Helix</TextBlock>
+            <Button Name="NavigateToWelcome" Click="NavigateToWelcome_Click">Back to Welcome Screen</Button>
             <StackPanel Orientation="Horizontal">
                 <StackPanel>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Height="Auto">
