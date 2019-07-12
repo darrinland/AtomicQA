@@ -54,6 +54,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objects\AssertElementExistsInstruction.cs" />
     <Compile Include="Objects\AssertValueInstruction.cs" />
     <Compile Include="Objects\Instruction.cs" />
     <Compile Include="Objects\Locator.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Objects\SendKeyInstruction.cs" />
     <Compile Include="Objects\Test.cs" />
     <Compile Include="Objects\TextInputInstruction.cs" />
+    <Compile Include="Objects\WaitTimeInstruction.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

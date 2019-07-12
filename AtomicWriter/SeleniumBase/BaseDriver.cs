@@ -112,5 +112,5 @@ namespace SeleniumBase
 
 			Driver.FindElement(location).SendKeys(key);
 		}
-	}
+    }
 }

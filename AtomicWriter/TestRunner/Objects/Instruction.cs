@@ -12,9 +12,11 @@ namespace AtomicWriter.Objects
 			GoToUrl,
 			Click,
             InputText,
-            Assert,
+            AssertValue,
             SendKeys,
-            Molecule
+            AssertElementExists,
+            Molecule,
+            WaitTime,
 		}
 
 		public static List<InstructionTypes> GetInstructionTypes()
@@ -24,9 +26,11 @@ namespace AtomicWriter.Objects
 				InstructionTypes.GoToUrl,
 				InstructionTypes.Click,
                 InstructionTypes.InputText,
-                InstructionTypes.Assert,
+                InstructionTypes.AssertValue,
                 InstructionTypes.SendKeys,
-                InstructionTypes.Molecule
+                InstructionTypes.AssertElementExists,
+                InstructionTypes.Molecule,
+                InstructionTypes.WaitTime,
 			};
 		}
 	}

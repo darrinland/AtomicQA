@@ -1,4 +1,5 @@
 ﻿using AtomicWriter.Objects;
+using TestRunner.Objects;
 using Newtonsoft.Json;
 using SeleniumBase;
 using System;
@@ -58,11 +59,17 @@ namespace TestRunner
 					case Instruction.InstructionTypes.SendKeys:
 						ExecuteSendKeys(instruction.Payload);
 						break;
-					case Instruction.InstructionTypes.Assert:
-						ExecuteAssertValue(instruction.Payload);
-						break;
+                    case Instruction.InstructionTypes.AssertValue:
+                        ExecuteAssertValue(instruction.Payload);
+                        break;
+                    case Instruction.InstructionTypes.AssertElementExists:
+                        ExecuteAssertElementExists(instruction.Payload);
+                        break;
                     case Instruction.InstructionTypes.Molecule:
                         ExecuteMolecule(instruction.Payload, tests);
+                        break;
+                    case Instruction.InstructionTypes.WaitTime:
+                        ExecuteWaitTime(instruction.Payload);
                         break;
 					default:
 						Console.Write("InstructionType not Recognized");
@@ -86,7 +93,8 @@ namespace TestRunner
 			}
 		}
 
-		private void ExecuteGoToUrl(string url)
+
+        private void ExecuteGoToUrl(string url)
 		{
 			_driver.NavigateToUrl(url);
 		}
@@ -121,12 +129,32 @@ namespace TestRunner
 			{
 				throw new Exception("Expected Value(" + expectedValue + ") does not match Actual Value(" + actualValue + ").");
 			}
-		}
+        }
+
+        private void ExecuteAssertElementExists(string payload)
+        {
+            var assertElementExistsInstruction = JsonConvert.DeserializeObject<AssertElementExistsInstruction>(payload);
+            var locator = assertElementExistsInstruction.Locator;
+            try
+            {
+                _driver.WaitFor(Locator.GetByLocator(locator.LocatorType, locator.Path));
+            }
+            catch
+            {
+                throw new Exception("Unable to find element By." + locator.LocatorType + " (" + locator.Path + ")");
+            }
+        }
 
         private void ExecuteMolecule(string payload, List<Test> tests)
         {
             var selectedMolecule = tests.First(t => payload.Equals(t.TestName));
             RunTest(selectedMolecule, tests);
         }
-	}
+
+        public void ExecuteWaitTime(string payload)
+        {
+            var waitTime = JsonConvert.DeserializeObject<WaitTimeInstruction>(payload);
+            System.Threading.Thread.Sleep(Int32.Parse(waitTime.waitTime));
+        }
+    }
 }
