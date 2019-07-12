@@ -77,8 +77,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Dashboard.xaml.cs">
-      <DependentUpon>Dashboard.xaml</DependentUpon>
+    <Compile Include="Modules.xaml.cs">
+      <DependentUpon>Modules.xaml</DependentUpon>
     </Compile>
     <Compile Include="WelcomeScreen.xaml.cs">
       <DependentUpon>WelcomeScreen.xaml</DependentUpon>
@@ -86,11 +86,11 @@
     <Compile Include="TestsRunner.xaml.cs">
       <DependentUpon>TestsRunner.xaml</DependentUpon>
     </Compile>
-    <Page Include="Dashboard.xaml">
+    <Page Include="EditTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditTest.xaml">
+    <Page Include="Modules.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

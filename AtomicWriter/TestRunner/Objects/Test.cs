@@ -6,5 +6,6 @@ namespace AtomicWriter.Objects
 	{
 		public string TestName { get; set; }
 		public List<Instruction> Instructions { get; set; }
+        public bool IsMolecule { get; set; }
 	}
 }
